@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_side_menu/flutter_side_menu.dart';
+import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
+import 'package:hiring_competitions_admin_portal/views/sidebar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      home: Sidebar(),
     );
   }
 }
