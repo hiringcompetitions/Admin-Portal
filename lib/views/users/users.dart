@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/category_provider.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/offer_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
-import 'package:hiring_competitions_admin_portal/views/oppurtunities/add_opportunity_card.dart';
+import 'package:hiring_competitions_admin_portal/views/opportunities/add_opportunity_card.dart';
 import 'package:provider/provider.dart';
 
 class Users extends StatefulWidget {
@@ -18,6 +18,7 @@ class _UsersState extends State<Users> {
 
   @override
   Widget build(BuildContext context) {
+    final provider=Provider.of<OfferProvider>(context);
     return Scaffold(
       backgroundColor: CustomColors().background,
       body: Padding(
@@ -75,12 +76,10 @@ class _UsersState extends State<Users> {
                         ),
                       ),
 
-                      Consumer<DropdownProvider>(
-                      builder: (context, dropdownProvider, _) {
-                        return SizedBox(
+                     SizedBox(
                           width: 250,
                           child: DropdownButtonFormField<String>(
-                            value: dropdownProvider.selectedItem,
+                            value: provider.selectedCategory.isNotEmpty? provider.selectedCategory: null,
                             decoration: InputDecoration(
                               isDense: true,
                               hintText: "Select category",
@@ -110,13 +109,12 @@ class _UsersState extends State<Users> {
                             }).toList(),
                             onChanged: (value) {
                               if (value != null) {
-                                dropdownProvider.setSelectedItem(value);
+                                provider.setCategory(value);
                               }
                             },
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      
 
                       // Choose Branch
 
