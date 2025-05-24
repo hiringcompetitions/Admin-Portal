@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
+import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
 import 'package:hiring_competitions_admin_portal/views/oppurtunities/oppurtunities.dart';
+import 'package:provider/provider.dart';
 
 class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
@@ -26,8 +29,19 @@ class _SidebarState extends State<Sidebar> {
     Center(child: Text("Co-ordinators"),),
   ];
 
+  Future<void> logout() async {
+    final provider = Provider.of<CustomAuthProvider>(context, listen: false);
+    final res = await provider.logout();
+    if(res == null) {
+      Navigator.pushReplacementNamed(context, '/');
+    } else {
+      CustomError("error").showToast(context, res);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<CustomAuthProvider>(context);
     return Scaffold(
       body: Row(
         children: [
@@ -130,9 +144,9 @@ class _SidebarState extends State<Sidebar> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle
                             ),
-                            child: AvatarPlus("sandeep"),
+                            child: AvatarPlus(authProvider.user!.displayName ?? 'User'),
                           ),
-                          Text("Ganesh Govala", style: GoogleFonts.poppins(
+                          Text(authProvider.user!.displayName ?? 'User', style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: CustomColors().secondaryText
@@ -163,7 +177,7 @@ class _SidebarState extends State<Sidebar> {
             _selectedIndex = index;
           });
         } else {
-          // Logout Logic
+          logout();
         }
       },
       child: MouseRegion(
