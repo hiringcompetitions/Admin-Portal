@@ -104,7 +104,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
                         return SizedBox(
                           width: 250,
                           child: DropdownButtonFormField<String>(
-                            value: dropdownProvider.selectedItem,
+                            value: dropdownProvider.selectedCategory,
                             decoration: InputDecoration(
                               isDense: true,
                               hintText: "Select category",
@@ -134,7 +134,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
                             }).toList(),
                             onChanged: (value) {
                               if (value != null) {
-                                dropdownProvider.setSelectedItem(value);
+                                dropdownProvider.setCategory(value);
                               }
                             },
                           ),

@@ -87,8 +87,8 @@ class _SidebarState extends State<Sidebar> {
                           spacing: 10,
                           children: [
                             NavElement("Dashboard", "dashboard", 0),
-                            NavElement("Users", "users", 1),
                             NavElement("Opportunities", "list", 2),
+                            NavElement("Users", "users", 1),
                             NavElement("Reports", "reports", 3),
                             NavElement("Co-ordinators", "user", 4),
                           ],
