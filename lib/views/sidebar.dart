@@ -7,7 +7,7 @@ import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_p
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
-import 'package:hiring_competitions_admin_portal/views/oppurtunities/oppurtunities.dart';
+import 'package:hiring_competitions_admin_portal/views/opportunities/opportunities.dart';
 import 'package:hiring_competitions_admin_portal/views/users/users.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +25,7 @@ class _SidebarState extends State<Sidebar> {
   List<Widget> pages = [
     Dashboard(),
     Users(),
-    Oppurtunities(),
+    Opportunities(),
     Center(child: Text("Reports"),),
     Center(child: Text("Co-ordinators"),),
   ];

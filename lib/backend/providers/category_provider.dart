@@ -6,7 +6,7 @@ class DropdownProvider with ChangeNotifier {
   String? get selectedCategory => _selectedCategory;
 
   String? _selectedBranch;
-  String? get selectedranch => _selectedBranch;
+  String? get selectedbranch => _selectedBranch;
 
   String? _selectedBatch;
   String? get selectedBatch => _selectedBatch;
