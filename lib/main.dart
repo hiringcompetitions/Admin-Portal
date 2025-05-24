@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
+
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/firebase_options.dart';
@@ -22,10 +23,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => DropdownProvider()),
         ChangeNotifierProvider(create: (_) => CustomAuthProvider()),
         ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
       ],
       child: MaterialApp(
+        theme: getAppTheme(),
         debugShowCheckedModeBanner: false,
         title: 'Hiring Competitions',
         initialRoute: '/',
