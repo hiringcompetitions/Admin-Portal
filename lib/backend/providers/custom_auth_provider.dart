@@ -22,7 +22,6 @@ class CustomAuthProvider extends ChangeNotifier {
       final user = await _authServices.login(email, password);
 
       if(user["res"] is User && user["res"] != null) {
-        print(user["res"]);
         _user = user["res"];
         _isloading = false;
         notifyListeners();
@@ -37,6 +36,8 @@ class CustomAuthProvider extends ChangeNotifier {
       return "Unexpected Error Occured. Please try again later";
     }
   }
+
+  // Create account
 
   Future<String?> signup(String name, String email, String password) async {
     try {
@@ -67,6 +68,8 @@ class CustomAuthProvider extends ChangeNotifier {
     }
   }
 
+  // Logout
+
   Future<String?> logout() async {
     try {
       await _authServices.logout();
@@ -74,5 +77,12 @@ class CustomAuthProvider extends ChangeNotifier {
     } catch(e) {
       return "Unexpected error occured. Please try again later";
     }
+  }
+
+  // Check Login status
+
+  Future<void> checkLogin() async {
+    _user = FirebaseAuth.instance.currentUser;
+    notifyListeners();
   }
 }

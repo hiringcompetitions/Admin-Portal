@@ -44,6 +44,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
   @override
   Widget build(BuildContext context) {
     final List<String> items = [
+      'Select',
       'Internship',
       'Hackathon',
       'Challenge',
@@ -86,7 +87,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
                         Text(
                           "Category",
                           style: GoogleFonts.poppins(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Colors.black87,
                           ),
