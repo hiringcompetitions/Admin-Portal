@@ -55,7 +55,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
     final provider = Provider.of<OfferProvider>(context);
     final width = MediaQuery.of(context).size.width;
 
-    final categories = ['Select', 'Internship', 'Hackathon', 'Challenge', 'Others'];
+    final categories = ['Internship', 'Hackathon', 'Challenge', 'Others'];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
