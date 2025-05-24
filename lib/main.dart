@@ -1,22 +1,40 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
-import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
+import 'package:hiring_competitions_admin_portal/firebase_options.dart';
+import 'package:hiring_competitions_admin_portal/views/auth/login.dart';
+import 'package:hiring_competitions_admin_portal/views/auth/signup.dart';
 import 'package:hiring_competitions_admin_portal/views/sidebar.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: Sidebar(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CustomAuthProvider()),
+        ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Hiring Competitions',
+        initialRoute: '/',
+        routes: {
+          '/' : (context) => Login(),
+          '/signup' : (context) => Signup(),
+          '/home' : (context) => Sidebar(),
+        },
+      ),
     );
   }
 }
