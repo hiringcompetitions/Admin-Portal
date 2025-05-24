@@ -8,6 +8,7 @@ import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
 import 'package:hiring_competitions_admin_portal/views/oppurtunities/oppurtunities.dart';
+import 'package:hiring_competitions_admin_portal/views/users/users.dart';
 import 'package:provider/provider.dart';
 
 class Sidebar extends StatefulWidget {
@@ -19,11 +20,11 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
 
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
 
   List<Widget> pages = [
     Dashboard(),
-    Center(child: Text("Users"),),
+    Users(),
     Oppurtunities(),
     Center(child: Text("Reports"),),
     Center(child: Text("Co-ordinators"),),
@@ -144,12 +145,12 @@ class _SidebarState extends State<Sidebar> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle
                             ),
-                            child: AvatarPlus(authProvider.user!.displayName ?? 'User'),
+                            child: AvatarPlus(authProvider.user?.displayName ?? 'User', trBackground: false,),
                           ),
-                          Text(authProvider.user!.displayName ?? 'User', style: GoogleFonts.poppins(
+                          Text(authProvider.user?.displayName ?? 'User', style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: CustomColors().secondaryText
+                            color: CustomColors().secondaryText,
                           ),),
                         ],
                       )
