@@ -37,8 +37,10 @@ class _OppurtunitiesState extends State<Oppurtunities> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: () {
-                        showDialog(context: context, builder: (context) => AlertDialog(
-                          content: AddOpportunityCard(),
+                        showDialog(
+                          context: context,
+                           builder: (context) => Dialog(
+                          child: AddOpportunityCard(),
                         ));
                       },
                       child: Container(
