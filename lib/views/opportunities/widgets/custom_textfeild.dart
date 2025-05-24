@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextfeild extends StatelessWidget {
+class CustomTextfield extends StatelessWidget {
   final String title;
   final String? hinttext;
   final bool isrequired;
@@ -8,7 +8,11 @@ class CustomTextfeild extends StatelessWidget {
   final double width;
   final EdgeInsets? padding;
   final TextInputType? keyboardtype;
-   CustomTextfeild({
+  final TextEditingController controller;
+   final String? Function(String?)? validator;
+   CustomTextfield({
+    required this.controller,
+    this.validator,
     this.height,
     this.padding,
     this.keyboardtype,
@@ -20,8 +24,9 @@ class CustomTextfeild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
-      height:height?? 70,
+      height:height?? 90,
       width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,11 +39,17 @@ class CustomTextfeild extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8,),
-          TextField(
+          TextFormField(
+            validator: validator,
+            controller: controller,
             keyboardType: keyboardtype,
             cursorColor: Colors.black,
             decoration: InputDecoration(             
+            errorStyle: TextStyle(height: 0),
                isDense: true,
+                border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey)
+              ),
                focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey)
               ),
@@ -49,6 +60,7 @@ class CustomTextfeild extends StatelessWidget {
               hintText: hinttext,
               hintStyle: Theme.of(context).textTheme.labelMedium
             ),
+            
           ),
         ],
       ),

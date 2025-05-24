@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
-import 'package:hiring_competitions_admin_portal/views/oppurtunities/add_opportunity_card.dart';
+import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
+import 'package:hiring_competitions_admin_portal/views/opportunities/add_opportunity_card.dart';
 
-class Oppurtunities extends StatefulWidget {
-  const Oppurtunities({super.key});
+class Opportunities extends StatefulWidget {
+  const Opportunities({super.key});
 
   @override
-  State<Oppurtunities> createState() => _OppurtunitiesState();
+  State<Opportunities> createState() => _OpportunitiesState();
 }
 
-class _OppurtunitiesState extends State<Oppurtunities> {
+class _OpportunitiesState extends State<Opportunities> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +37,15 @@ class _OppurtunitiesState extends State<Oppurtunities> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: () {
-                        showDialog(
+                      onTap: ()async {
+                       bool? result=await showDialog<bool>(
                           context: context,
                            builder: (context) => Dialog(
                           child: AddOpportunityCard(),
                         ));
+                        if(result==true){
+                            CustomError("success").showToast(context, "Opportunity added successfully");
+                        }
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
