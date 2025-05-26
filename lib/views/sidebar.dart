@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
+import 'package:hiring_competitions_admin_portal/views/adminUsers/admin_users.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
 import 'package:hiring_competitions_admin_portal/views/opportunities/opportunities.dart';
 import 'package:hiring_competitions_admin_portal/views/users/users.dart';
@@ -27,7 +28,7 @@ class _SidebarState extends State<Sidebar> {
     Users(),
     Opportunities(),
     Center(child: Text("Reports"),),
-    Center(child: Text("Co-ordinators"),),
+    AdminUsers(),
   ];
 
   Future<void> logout() async {
@@ -90,7 +91,7 @@ class _SidebarState extends State<Sidebar> {
                             NavElement("Opportunities", "list", 2),
                             NavElement("Users", "users", 1),
                             NavElement("Reports", "reports", 3),
-                            NavElement("Co-ordinators", "user", 4),
+                            NavElement("Admin Users", "user", 4),
                           ],
                         ),
                         Column(

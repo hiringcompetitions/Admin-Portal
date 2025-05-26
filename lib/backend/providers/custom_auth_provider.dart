@@ -6,7 +6,7 @@ class CustomAuthProvider extends ChangeNotifier {
   // Services Instance
   CustomAuthServices _authServices = CustomAuthServices();
 
-  bool _isloading = false;
+  bool? _isloading = false;
   bool? get isLoading => _isloading;
 
   User? _user;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import '../models/offer_model.dart';
 import '../services/offer_service.dart';
 
@@ -16,7 +15,7 @@ class OfferProvider extends ChangeNotifier {
 
   String selectedCategory = '';
   bool isTopPick = false;
-  bool _isLoading=false;
+  bool _isLoading = false;
   bool get isLoading=>_isLoading;
 
   final OfferService _offerService = OfferService();

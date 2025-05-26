@@ -2,6 +2,7 @@ import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/signup.dart';
@@ -20,13 +21,32 @@ class Login extends StatelessWidget {
     final password = _passwordController.text.trim();
 
     final provider = Provider.of<CustomAuthProvider>(context, listen: false);
+    final firestoreProvider = Provider.of<FirestoreProvider>(context, listen: false);
 
     if(email == "" || password == "") {
       CustomError("error").showToast(context, "Please Enter the credentials");
     } else {
+      // Check Login
       final res = await provider.login(email, password);
+
       if(res == null) {
-        Navigator.pushReplacementNamed(context, '/home');
+        // Get User Status
+        final uid = provider.user!.uid;
+        final userDoc = await firestoreProvider.getAdminStatus(uid);
+
+        if(userDoc != null) {
+          final data = userDoc.data() as Map<String, dynamic>?;
+          final isPending = data?['pending'];
+
+          // Check pending status
+          if(isPending == "Pending") {
+            CustomError("error").showToast(context, "Your account is awaiting approval. Please contact the admin for confirmation.");
+          } else if(isPending == "Rejected") {
+            CustomError("error").showToast(context, "Your request was Rejected. Please contact the admin for confirmation.");
+          } else {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        }
       } else {
         CustomError("error").showToast(context, res);
       }
