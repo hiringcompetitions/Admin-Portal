@@ -1,7 +1,6 @@
 import 'package:avatar_plus/avatar_plus.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_side_menu/flutter_side_menu.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/widgets/chart.dart';

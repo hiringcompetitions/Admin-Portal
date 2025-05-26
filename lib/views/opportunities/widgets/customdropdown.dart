@@ -97,6 +97,7 @@ class _MultiSelectTextFieldState extends State<MultiSelectTextField> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final provider = Provider.of<OfferProvider>(context);
     return CompositedTransformTarget(
       link: _layerLink,

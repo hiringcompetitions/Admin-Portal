@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/offer_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/opportunities.dart';
 import 'package:hiring_competitions_admin_portal/views/opportunities/widgets/custom_textfeild.dart';
 import 'package:hiring_competitions_admin_portal/views/opportunities/widgets/customdropdown.dart';
 import 'package:provider/provider.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class AddOpportunityCard extends StatefulWidget {
   const AddOpportunityCard({super.key});
@@ -61,7 +59,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
     ];
     final provider = Provider.of<OfferProvider>(context);
     final width = MediaQuery.of(context).size.width;
-    final selected = provider.selectedCategories;
+    
 
     final categories = [
       'Select',
