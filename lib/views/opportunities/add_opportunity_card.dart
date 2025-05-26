@@ -55,7 +55,7 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
     final provider = Provider.of<OfferProvider>(context);
     final width = MediaQuery.of(context).size.width;
 
-    final categories = ['Select', 'Internship', 'Hackathon', 'Challenge', 'Others'];
+    final categories = ['Internship', 'Hackathon', 'Challenge', 'Others'];
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -101,10 +101,11 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
                         value: provider.selectedCategory.isNotEmpty
                             ? provider.selectedCategory
                             : null,
+                        dropdownColor: Colors.white,
                         decoration: InputDecoration(
                           hintText: "Select category",
                           filled: true,
-                          fillColor: Colors.grey[100],
+                          fillColor: Colors.white,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                         ),
@@ -284,23 +285,21 @@ class _AddOpportunityCardState extends State<AddOpportunityCard> {
                     ),
                   ),
                   const SizedBox(width: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => Opportunities(),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 15),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
+                        child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
                       ),
-                      child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
                     ),
                   ),
                 ],

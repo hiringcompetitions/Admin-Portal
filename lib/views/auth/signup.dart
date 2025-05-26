@@ -19,7 +19,6 @@ class Signup extends StatelessWidget {
     final name = _nameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
-    final UserModel user = UserModel(name, email);
 
     final authProvider = Provider.of<CustomAuthProvider>(context, listen : false);
     final firestoreProvider = Provider.of<FirestoreProvider>(context, listen: false);
@@ -27,16 +26,38 @@ class Signup extends StatelessWidget {
     if(name == "" || email == "" || password == "") {
       CustomError("error").showToast(context, "Please enter the credentials");
     } else {
+
+      // Create account
       final res = await authProvider.signup(name, email, password);
-      if(res != null) {
-        CustomError("error").showToast(context, res);
-      } else {
-        final response = await firestoreProvider.addUser(user);
-        if(response == null) {
-          Navigator.pushReplacementNamed(context, '/home');
+
+      if(res == null) {
+        final user = UserModel(name, email, 'Pending');
+        final uid = authProvider.user!.uid;
+
+        // Add User
+        final res = await firestoreProvider.addUser(user, uid);
+
+        if(res == null) {
+
+          // Get User
+          final userDoc = await firestoreProvider.getAdminStatus(uid);
+          
+          if(userDoc != null) {
+            final data = userDoc.data() as Map<String, dynamic>?;
+            final isPending = data?['pending'] ?? true;
+
+            // Check Status
+            if(isPending) {
+              CustomError("error").showToast(context, "Your account is awaiting approval. Please contact the admin for confirmation.");
+            } else {
+              Navigator.pushReplacementNamed(context, '/home');
+            }
+          }
         } else {
-          CustomError("error").showToast(context, response);
+          CustomError("error").showToast(context, res);
         }
+      } else {
+        CustomError("error").showToast(context, res);
       }
     }
   }
@@ -115,7 +136,7 @@ class Signup extends StatelessWidget {
                                 color: CustomColors().primary,
                                 borderRadius: BorderRadius.circular(70),
                               ),
-                              child: authProvider.isLoading! || firestoreProvider.isLoading!
+                              child: authProvider.isLoading! || firestoreProvider.isLoading!  
                                 ? SizedBox(
                                   height: 23,
                                   width: 23,
