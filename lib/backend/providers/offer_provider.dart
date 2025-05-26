@@ -17,7 +17,7 @@ class OfferProvider extends ChangeNotifier {
 
   String selectedCategory = '';
   bool isTopPick = false;
-  bool _isLoading=false;
+  bool _isLoading = false;
   bool get isLoading=>_isLoading;
   bool _isadded=false;
   bool get isadded=> _isadded;

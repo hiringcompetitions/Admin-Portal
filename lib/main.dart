@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/category_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/offer_provider.dart';
 
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => OfferProvider()),
+        ChangeNotifierProvider(create: (_) => DropdownProvider()),
         ChangeNotifierProvider(create: (_) => CustomAuthProvider()),
         ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
       ],

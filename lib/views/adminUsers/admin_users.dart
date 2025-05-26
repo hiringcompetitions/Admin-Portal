@@ -5,26 +5,19 @@ import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/offer_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
+import 'package:hiring_competitions_admin_portal/views/adminUsers/widgets/admin_users_table.dart';
 import 'package:hiring_competitions_admin_portal/views/users/users_table.dart';
-import 'package:provider/provider.dart';
 
-class Users extends StatefulWidget {
-  const Users({super.key});
-
-  @override
-  State<Users> createState() => _UsersState();
-}
-
-class _UsersState extends State<Users> {
-
-  final GlobalKey<UsersTableState> usersTableKey = GlobalKey<UsersTableState>(); 
+class AdminUsers extends StatelessWidget {
+  const AdminUsers({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final GlobalKey<AdminUsersTableState> usersTableKey = GlobalKey<AdminUsersTableState>(); 
+
     return Scaffold(
       backgroundColor: CustomColors().background,
       body: Padding(
@@ -38,7 +31,7 @@ class _UsersState extends State<Users> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Users",
+                  Text("Admin Users",
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -120,7 +113,7 @@ class _UsersState extends State<Users> {
 
               SizedBox(
                 height: 600,
-                child: UsersTable(key: usersTableKey,)),
+                child: AdminUsersTable(key: usersTableKey,)),
             ],
           ),
         ),
