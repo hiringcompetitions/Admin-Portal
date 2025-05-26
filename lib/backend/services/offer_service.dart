@@ -3,10 +3,16 @@ import 'package:hiring_competitions_admin_portal/backend/models/offer_model.dart
 
 class OfferService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
+ 
+ String generateOfferDocId() {
+  return _firestore.collection('offers').doc().id;
+}
+
 
   Future<void> addOffer(OfferModel offer) async {
   try {
-    await _firestore.collection('Opportunities').add(offer.toMap());
+    await _firestore.collection('Opportunities').doc(offer.uid).set(offer.toMap());
   } catch (e) {
     throw Exception(e.toString());
   }
