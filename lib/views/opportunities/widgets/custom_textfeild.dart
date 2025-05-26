@@ -10,7 +10,11 @@ class CustomTextfield extends StatelessWidget {
   final TextInputType? keyboardtype;
   final TextEditingController controller;
    final String? Function(String?)? validator;
+  final GestureTapCallback? onTap;
+  final IconData? icon;
    CustomTextfield({
+    this.icon,
+    this.onTap,
     required this.controller,
     this.validator,
     this.height,
@@ -34,7 +38,7 @@ class CustomTextfield extends StatelessWidget {
           Row(
             children: [
               Text(title,style: Theme.of(context).textTheme.headlineMedium,),
-              SizedBox(width: 6,),
+              SizedBox(width: 3,),
               isrequired?Text("*",style: TextStyle(color: Colors.red),):SizedBox(width: 0,),
             ],
           ),
@@ -44,13 +48,14 @@ class CustomTextfield extends StatelessWidget {
             controller: controller,
             keyboardType: keyboardtype,
             cursorColor: Colors.black,
-            decoration: InputDecoration(             
-            errorStyle: TextStyle(height: 0),
-               isDense: true,
-                border: OutlineInputBorder(
+            decoration: InputDecoration(  
+              suffixIcon: Icon(icon,size: 20,),              
+              errorStyle: TextStyle(height: 0),
+              isDense: true,
+              border: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey)
               ),
-               focusedBorder: OutlineInputBorder(
+              focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey)
               ),
               enabledBorder: OutlineInputBorder(
@@ -60,6 +65,7 @@ class CustomTextfield extends StatelessWidget {
               hintText: hinttext,
               hintStyle: Theme.of(context).textTheme.labelMedium
             ),
+            onTap: onTap,
             
           ),
         ],

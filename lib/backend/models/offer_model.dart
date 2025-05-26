@@ -1,46 +1,52 @@
 class OfferModel {
   final String title;
   final String category;
-  final String company;
+  final String organization;
   final String eligibility;
   final String duration;
-  final String deadline;
-  final String reward;
+  final String lastdate;
+  final String payout;
   final String location;
   final String about;
   final List<String> otherInfo;
   final bool isTopPick;
+  final String url;
   final DateTime timestamp;
+  final String uid;
 
   OfferModel({
     required this.title,
     required this.category,
-    required this.company,
+    required this.organization,
     required this.eligibility,
     required this.duration,
-    required this.deadline,
-    required this.reward,
+    required this.lastdate,
+    required this.payout,
     required this.location,
     required this.about,
     required this.otherInfo,
     required this.isTopPick,
+    required this.url,
     required this.timestamp,
+    required this.uid,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'category': category,
-      'company': company,
+      'organization': organization,
       'eligibility': eligibility,
       'duration': duration,
-      'deadline': deadline,
-      'reward': reward,
+      'lastdate': lastdate,
+      'payout': payout,
       'location': location,
       'about': about,
       'otherInfo': otherInfo,
       'isTopPick': isTopPick,
+      'url':url,
       'timestamp': timestamp,
+      'uid':uid
     };
   }
 
@@ -48,16 +54,18 @@ class OfferModel {
     return OfferModel(
       title: map['title'] ?? '',
       category: map['category'] ?? '',
-      company: map['company'] ?? '',
+      organization: map['organization'] ?? '',
       eligibility: map['eligibility'] ?? '',
       duration: map['duration'] ?? '',
-      deadline: map['deadline'] ?? '',
-      reward: map['reward'] ?? '',
+      lastdate: map['lastdate'] ?? '',
+      payout: map['payout'] ?? '',
       location: map['location'] ?? '',
       about: map['about'] ?? '',
       otherInfo: map['otherInfo'] ?? '',
       isTopPick: map['isTopPick'] ?? false,
+      url: map['url']??'',
       timestamp: map['timestamp'].toDate(),
+      uid: map['uid']??'',
     );
   }
 }
