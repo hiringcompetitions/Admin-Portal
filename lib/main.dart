@@ -1,25 +1,34 @@
+import 'dart:async';
+import 'dart:html' as html;
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_side_menu/flutter_side_menu.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/category_provider.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/offer_provider.dart';
-
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/theme.dart';
 import 'package:hiring_competitions_admin_portal/firebase_options.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/login.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/signup.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/add_opportunity_card.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/opportunities.dart';
 import 'package:hiring_competitions_admin_portal/views/sidebar.dart';
 import 'package:hiring_competitions_admin_portal/views/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MyApp());
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    html.window.onPopState.listen((event) {
+      html.window.history.pushState(null, '', html.window.location.href);
+    });
+
+    html.window.history.pushState(null, '', html.window.location.href);
+    runApp(MyApp());
+  }, (error, stack) {
+    // Optional: log to Firebase Crashlytics or console
+    print("Unhandled error: $error");
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +38,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => OfferProvider()),
         ChangeNotifierProvider(create: (_) => DropdownProvider()),
         ChangeNotifierProvider(create: (_) => CustomAuthProvider()),
         ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
@@ -43,7 +51,17 @@ class MyApp extends StatelessWidget {
           '/' : (context) => SplashScreen(),
           '/login' : (context) => Login(),
           '/signup' : (context) => Signup(),
-          '/home' : (context) => Sidebar(),
+          '/home' : (context) {
+            final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+            if(isLoggedIn) {
+              return Sidebar();
+            } else {
+              Future.microtask(() {
+                Navigator.pushReplacementNamed(context, '/login');
+              });
+              return Center(child: CircularProgressIndicator(),);
+            }
+          },
         },
       ),
     );

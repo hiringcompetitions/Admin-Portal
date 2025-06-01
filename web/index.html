@@ -31,6 +31,39 @@
 
   <title>Hiring Competitions</title>
   <link rel="manifest" href="manifest.json">
+
+  <script>
+    // Prevent two-finger swipe back/forward on trackpads or touchscreens
+    window.addEventListener('wheel', function(e) {
+      // Block horizontal swipe that might cause back/forward
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Prevent browser back/forward via touch gestures
+    let startX = 0;
+    window.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        startX = e.touches[0].clientX;
+      }
+    });
+
+    window.addEventListener('touchmove', function(e) {
+      const diffX = e.touches[0].clientX - startX;
+      if (Math.abs(diffX) > 80) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Optional: Prevent back/forward keyboard shortcuts
+    window.addEventListener('keydown', function(e) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === '[' || e.key === ']')) {
+        e.preventDefault();
+      }
+    });
+  </script>
+
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

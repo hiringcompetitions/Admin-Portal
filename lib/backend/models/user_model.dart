@@ -1,19 +1,19 @@
 class UserModel {
   final String name;
   final String email;
-  final String pending;
+  final String status;
 
   UserModel(
     this.name,
     this.email,
-    this.pending,
+    this.status,
   );
 
   Map<String, dynamic> get() {
     return {
       "name" : name,
       "email" : email,
-      "pending" : pending,
+      "status" : status,
     };
   }
 }

@@ -44,10 +44,10 @@ class Signup extends StatelessWidget {
           
           if(userDoc != null) {
             final data = userDoc.data() as Map<String, dynamic>?;
-            final isPending = data?['pending'] ?? true;
+            final status = data?['status'];
 
             // Check Status
-            if(isPending) {
+            if(status == 'Pending') {
               CustomError("error").showToast(context, "Your account is awaiting approval. Please contact the admin for confirmation.");
             } else {
               Navigator.pushReplacementNamed(context, '/home');

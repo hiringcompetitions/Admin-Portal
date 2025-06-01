@@ -26,7 +26,6 @@ class AdminUsersTableState extends State<AdminUsersTable> {
 
   @override
   Widget build(BuildContext context) {
-
     final provider = Provider.of<FirestoreProvider>(context);
     final outercontext = context;
 
@@ -54,117 +53,31 @@ class AdminUsersTableState extends State<AdminUsersTable> {
         field: 'action',
         type: PlutoColumnType.text(),
         renderer: (PlutoColumnRendererContext context) {
-          final isApproved = context.row.cells['pending']?.value;
+          final status = context.row.cells['pending']?.value;
           final email = context.row.cells['email']?.value;
 
-          return isApproved == 'Pending'
-              ? Row(
-                  spacing: 10,
-                  children: [
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () async {
-                          final res = await provider.updateStatus(email, 'Approved');
-                          if( res != null ) {
-                            CustomError("error").showToast(outercontext, res);
-                          } else {
-                            CustomError("success").showToast(outercontext, "Request approved");
-                            reloadState();
-                          }
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(164, 200, 230, 201),
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text(
-                            "Approve",
-                            style: GoogleFonts.poppins(
-                                fontSize: 14, color: Colors.green),
-                          ),
-                        ),
-                      ),
-                    ),
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () async {
-                          print("REJECT");
-                          final res = await provider.updateStatus(email, 'Rejected');
-                          if( res != null ) {
-                            CustomError("error").showToast(outercontext, res);
-                          } else {
-                            CustomError("error").showToast(outercontext, "Request Rejected");
-                          }
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                          decoration: BoxDecoration(
-                              color: Colors.red.shade100,
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text(
-                            "Reject",
-                            style: GoogleFonts.poppins(
-                                fontSize: 14, color: Colors.red),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : isApproved == 'Approved' ? Row(
-                  spacing: 10,
-                  children: [
-                    MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: GestureDetector(
-                        onTap: () {
-                          print("Make admin");
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(164, 200, 230, 201),
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text(
-                            "Make Admin",
-                            style: GoogleFonts.poppins(
-                                fontSize: 14, color: Colors.green),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                        decoration: BoxDecoration(
-                            color: Colors.red.shade100,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Text(
-                          "Remove",
-                          style: GoogleFonts.poppins(
-                              fontSize: 14, color: Colors.red),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-                : Row(
-                  spacing: 10,
-                  children: [
-                    
-                  ],
-                );
+          return status == 'Pending'
+          ? Row(
+            spacing: 10,
+            children: [
+              RowButton(provider, email, "Approve", "Approved",Colors.green,const Color.fromARGB(255, 235, 255, 236), outercontext),
+              RowButton(provider, email, "Reject", "Rejected",Colors.red,Colors.red.shade100, outercontext),
+            ],
+          ) : status == 'Approved' ? 
+          Row(
+            spacing: 10,
+            children: [
+              RowButton(provider, email, "Make Admin", "Admin",Colors.green,const Color.fromARGB(255, 235, 255, 236), outercontext),
+              RowButton(provider, email, "Remove", "Removed",Colors.red,Colors.red.shade100, outercontext),
+            ],
+          ) : status == 'Admin' 
+          ? Row(
+            spacing: 10,
+            children: [
+              RowButton(provider, email, "Make User", "Approved",Colors.green,const Color.fromARGB(255, 235, 255, 236), outercontext),
+              RowButton(provider, email, "Remove", "Removed",Colors.red,Colors.red.shade100, outercontext),
+            ],
+          ) : Row(children: [],);
         },
       ),
     ];
@@ -186,13 +99,13 @@ class AdminUsersTableState extends State<AdminUsersTable> {
 
           if (data != null) {
             final rows = data.docs.map((doc) {
-              final isPending = doc['pending'];
+              final status = doc['status'];
 
               return PlutoRow(cells: {
                 'name': PlutoCell(value: doc['name']),
                 'email': PlutoCell(value: doc['email']),
                 'action': PlutoCell(value: ''),
-                'pending': PlutoCell(value: isPending),
+                'pending': PlutoCell(value: status),
               });
             }).toList();
 
@@ -250,5 +163,45 @@ class AdminUsersTableState extends State<AdminUsersTable> {
 
           return Container();
         });
+  }
+
+  Widget RowButton(FirestoreProvider provider, String email, String title, String updateStatus, Color color, Color background, BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () async {
+          final res = await provider.updateStatus(email, updateStatus);
+          if (res != null) {
+            CustomError("error").showToast(context, res);
+          } else {
+            var msg = '';
+            switch(updateStatus) {
+              case 'Approved' : msg = 'Request Accepted';
+                                break;
+              case 'Rejected' : msg = 'Rejected the Request';
+                                break;
+              case 'Admin' : msg = 'Successfully made the user as Admin';
+                                break;
+              case 'Removed' : msg = 'Successfully Removed the user';
+                                break;
+              default : msg = 'Execution Success';
+            }
+            CustomError("success").showToast(context, msg);
+            reloadState();
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+          decoration: BoxDecoration(
+              color: background,
+              borderRadius: BorderRadius.circular(50)),
+          child: Text(
+            title,
+            style: GoogleFonts.poppins(fontSize: 14, color: color),
+          ),
+        ),
+      ),
+    );
   }
 }
