@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/offer_provider.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/opportunity_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/users/users_table.dart';

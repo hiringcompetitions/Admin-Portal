@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/adminUsers/admin_users.dart';
@@ -23,13 +24,30 @@ class _SidebarState extends State<Sidebar> {
 
   int _selectedIndex = 1;
 
+  String? status;
+
   List<Widget> pages = [
     Dashboard(),
-    Users(),
     Opportunities(),
-    Center(child: Text("Reports"),),
+    Users(),
     AdminUsers(),
   ];
+
+  Future<String?> getStatus() async {
+    final firestorepProvider = Provider.of<FirestoreProvider>(context, listen: false);
+    final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
+
+    final uid = authProvider.user?.uid ?? 'none';
+    
+    final doc = await firestorepProvider.getAdminStatus(uid);
+
+    if(doc != null) {
+      final data = doc.data() as Map<String, dynamic>?;
+      return data?['status'];
+    }
+
+    return null;
+  }
 
   Future<void> logout() async {
     final provider = Provider.of<CustomAuthProvider>(context, listen: false);
@@ -39,6 +57,20 @@ class _SidebarState extends State<Sidebar> {
     } else {
       CustomError("error").showToast(context, res);
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      final res = await getStatus();
+      if(mounted) {
+        setState(() {
+          status = res;
+        });
+      }
+    });
   }
 
   @override
@@ -88,10 +120,10 @@ class _SidebarState extends State<Sidebar> {
                           spacing: 10,
                           children: [
                             NavElement("Dashboard", "dashboard", 0),
-                            NavElement("Opportunities", "list", 2),
-                            NavElement("Users", "users", 1),
-                            NavElement("Reports", "reports", 3),
-                            NavElement("Admin Users", "user", 4),
+                            NavElement("Opportunities", "list", 1),
+                            NavElement("Users", "users", 2),
+                            // NavElement("Reports", "reports", 3),
+                            status == 'Admin' ? NavElement("Admin Users", "user", 3) : Container(),
                           ],
                         ),
                         Column(

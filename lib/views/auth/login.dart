@@ -36,13 +36,15 @@ class Login extends StatelessWidget {
 
         if(userDoc != null) {
           final data = userDoc.data() as Map<String, dynamic>?;
-          final isPending = data?['pending'];
+          final status = data?['status'];
 
           // Check pending status
-          if(isPending == "Pending") {
+          if(status == "Pending") {
             CustomError("error").showToast(context, "Your account is awaiting approval. Please contact the admin for confirmation.");
-          } else if(isPending == "Rejected") {
+          } else if(status == "Rejected") {
             CustomError("error").showToast(context, "Your request was Rejected. Please contact the admin for confirmation.");
+          } else if(status == "Removed") {
+            CustomError("error").showToast(context, "You no longer have the access to this portal.");
           } else {
             Navigator.pushReplacementNamed(context, '/home');
           }

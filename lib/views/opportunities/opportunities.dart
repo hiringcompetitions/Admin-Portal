@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
-import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/add_opportunity_card.dart';
+import 'package:hiring_competitions_admin_portal/views/opportunities/oppurtunity_card.dart';
+import 'package:hiring_competitions_admin_portal/views/opportunities/widgets/oppurtunities_table.dart';
 
 class Opportunities extends StatefulWidget {
   const Opportunities({super.key});
@@ -12,6 +12,9 @@ class Opportunities extends StatefulWidget {
 }
 
 class _OpportunitiesState extends State<Opportunities> {
+
+  final GlobalKey<OppurtunitiesTableState> key = GlobalKey<OppurtunitiesTableState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +41,27 @@ class _OpportunitiesState extends State<Opportunities> {
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
                       onTap: ()async {
-                       bool? result=await showDialog<bool>(
+                        await showDialog(
                           context: context,
                            builder: (context) => Dialog(
-                          child: AddOpportunityCard(),
+                          child: OpportunityCard(
+                            title: null,
+                            selectedCategory: null,
+                            organizationName: null,
+                            eligibility: [],
+                            duration: null,
+                            lastDate: null,
+                            payout: null,
+                            location: null,
+                            eventDate: null,
+                            about: null,
+                            otherInfo: null,
+                            buttonText: "Add Opportunity",
+                            url: null,
+                            isImportant: false,
+                            uid: "",
+                          ),
                         ));
-                        if(result==true){
-                            CustomError("success").showToast(context, "Opportunity added successfully");
-                        }
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -72,6 +88,10 @@ class _OpportunitiesState extends State<Opportunities> {
               SizedBox(
                 height: 20,
               ),
+
+              SizedBox(
+                height: 600,
+                child: OppurtunitiesTable(key: key,)),
             ],
           ),
         ),
