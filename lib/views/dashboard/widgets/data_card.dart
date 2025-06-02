@@ -8,7 +8,7 @@ class DataCard extends StatelessWidget {
   final Color? backgroundColor;
   final String title;
   final int count;
-  const DataCard({
+  const DataCard({  
     required this.mainColor,
     required this.secondaryColor,
     required this.backgroundColor,
@@ -65,12 +65,18 @@ class DataCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   spacing: 5,
                   children: [
-                    Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: CustomColors().primaryText,
-                          fontWeight: FontWeight.w400),
+                    Row(
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: CustomColors().primaryText,
+                              fontWeight: FontWeight.w400),
+                        ),
+
+                        Icon(Icons.more_vert_outlined, size: 18,),
+                      ],
                     ),
                     Text(
                       count.toString(),

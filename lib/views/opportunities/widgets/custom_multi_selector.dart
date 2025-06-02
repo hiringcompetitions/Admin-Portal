@@ -24,7 +24,7 @@ class _CustomMultiSelectorState extends State<CustomMultiSelector> {
   @override
   Widget build(BuildContext context) {
 
-    String title = widget.selectedtems.isEmpty ? "Choose Eligibility" : widget.selectedtems.join(', ');
+    String title = widget.selectedtems.isEmpty ? "Choose Eligibility" : widget.selectedtems.join(',');
 
     return Container(
       height: 50,

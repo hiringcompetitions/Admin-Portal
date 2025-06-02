@@ -1,7 +1,7 @@
 import 'package:avatar_plus/avatar_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
@@ -22,7 +22,7 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   String? status;
 
@@ -37,15 +37,16 @@ class _SidebarState extends State<Sidebar> {
     final firestorepProvider = Provider.of<FirestoreProvider>(context, listen: false);
     final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
 
+    await authProvider.checkLogin();
+
     final uid = authProvider.user?.uid ?? 'none';
-    
+
     final doc = await firestorepProvider.getAdminStatus(uid);
 
     if(doc != null) {
       final data = doc.data() as Map<String, dynamic>?;
       return data?['status'];
     }
-
     return null;
   }
 
@@ -53,7 +54,7 @@ class _SidebarState extends State<Sidebar> {
     final provider = Provider.of<CustomAuthProvider>(context, listen: false);
     final res = await provider.logout();
     if(res == null) {
-      Navigator.pushReplacementNamed(context, '/');
+      context.go('/login');
     } else {
       CustomError("error").showToast(context, res);
     }
