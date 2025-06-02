@@ -2,70 +2,67 @@ import 'package:avatar_plus/avatar_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
-import 'package:hiring_competitions_admin_portal/views/adminUsers/admin_users.dart';
-import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/opportunities.dart';
-import 'package:hiring_competitions_admin_portal/views/users/users.dart';
 import 'package:provider/provider.dart';
 
 class Sidebar extends StatefulWidget {
-  const Sidebar({super.key});
+  final Widget child;
+  const Sidebar({required this.child, super.key});
 
   @override
   State<Sidebar> createState() => _SidebarState();
 }
 
 class _SidebarState extends State<Sidebar> {
-
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
+  String _selectedRoute = '/opportunities';
 
   String? status;
 
-  List<Widget> pages = [
-    Dashboard(),
-    Opportunities(),
-    Users(),
-    AdminUsers(),
+  final List<String> pageRoute = [
+    '/home',
+    '/home/opportunities',
+    '/home/users',
+    '/home/adminusers',
   ];
 
   Future<String?> getStatus() async {
-    final firestorepProvider = Provider.of<FirestoreProvider>(context, listen: false);
-    final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
-
+    final firestorepProvider =
+        Provider.of<FirestoreProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<CustomAuthProvider>(context, listen: false);
+    await authProvider.checkLogin();
     final uid = authProvider.user?.uid ?? 'none';
-    
     final doc = await firestorepProvider.getAdminStatus(uid);
 
-    if(doc != null) {
+    if (doc != null) {
       final data = doc.data() as Map<String, dynamic>?;
       return data?['status'];
     }
-
     return null;
   }
 
   Future<void> logout() async {
     final provider = Provider.of<CustomAuthProvider>(context, listen: false);
     final res = await provider.logout();
-    if(res == null) {
-      Navigator.pushReplacementNamed(context, '/');
+    if (res == null) {
+      context.go('/');
     } else {
-      CustomError("error").showToast(context, res);
+      CustomError("Error").showToast(context, res);
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () async {
       final res = await getStatus();
-      if(mounted) {
+      if (mounted) {
         setState(() {
           status = res;
         });
@@ -111,25 +108,24 @@ class _SidebarState extends State<Sidebar> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 4,),
+                  SizedBox(height: 4),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
-                          spacing: 10,
                           children: [
                             NavElement("Dashboard", "dashboard", 0),
                             NavElement("Opportunities", "list", 1),
                             NavElement("Users", "users", 2),
-                            // NavElement("Reports", "reports", 3),
-                            status == 'Admin' ? NavElement("Admin Users", "user", 3) : Container(),
+                            if (status == 'Admin')
+                              NavElement("Admin Users", "user", 3),
                           ],
                         ),
                         Column(
                           children: [
-                            NavElement("Logout", "logout", 5),
-                            SizedBox(height: 40,),
+                            NavElement("Logout", "logout", -1, onTap: logout),
+                            SizedBox(height: 40),
                           ],
                         ),
                       ],
@@ -141,99 +137,119 @@ class _SidebarState extends State<Sidebar> {
           ),
           Expanded(
             child: Container(
-            height: MediaQuery.of(context).size.height,
-            color: CustomColors().background,
-            child: Column(
-              children: [
-
-                // Header
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                  color: Colors.white,
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      // Welcome Text
-                      Row(
-                        spacing: 10,
-                        children: [
-                          Text("Welcome", style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: CustomColors().secondaryText
-                          ),),
-                          Image.asset("lib/assets/hi.png", height: 20,),
-                        ],
-                      ),
-
-                      // Account Name
-                      Row(
-                        spacing: 10,
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle
+              height: MediaQuery.of(context).size.height,
+              color: CustomColors().background,
+              child: Column(
+                children: [
+                  // Header
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    color: Colors.white,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Welcome Text
+                        Row(
+                          children: [
+                            Text(
+                              "Welcome",
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: CustomColors().secondaryText,
+                              ),
                             ),
-                            child: AvatarPlus(authProvider.user?.displayName ?? 'User', trBackground: false,),
-                          ),
-                          Text(authProvider.user?.displayName ?? 'User', style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: CustomColors().secondaryText,
-                          ),),
-                        ],
-                      )
-                    ],
+                            SizedBox(width: 10),
+                            Image.asset(
+                              "lib/assets/hi.png",
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                        // Account Info
+                        Row(
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 40,
+                              decoration:
+                                  BoxDecoration(shape: BoxShape.circle),
+                              child: AvatarPlus(
+                                authProvider.user?.displayName ?? 'User',
+                                trBackground: false,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              authProvider.user?.displayName ?? 'User',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: CustomColors().secondaryText,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-
-                Expanded(
-                  child: Container(
-                    child: pages[_selectedIndex]),
-                ),
-              ],
+                  Expanded(child: widget.child),
+                ],
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );
   }
 
-  Widget NavElement(String name, String image, int index) {
+  Widget NavElement(String name, String image, int index, {VoidCallback? onTap}) {
     return GestureDetector(
       onTap: () {
-        if(index < 5) {
+        if (onTap != null) {
+          onTap();
+        } else if (index >= 0 && index < pageRoute.length) {
+          final route = pageRoute[index];
           setState(() {
+            _selectedRoute = route;
             _selectedIndex = index;
           });
-        } else {
-          logout();
+          context.go(route);
         }
       },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          margin: EdgeInsets.only(top: 8),
           decoration: BoxDecoration(
-              color: _selectedIndex == index ? CustomColors().primary : Colors.white, 
-              borderRadius: BorderRadius.circular(12)),
+            color: _selectedIndex == index
+                ? CustomColors().primary
+                : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: Row(
-            spacing: 12,
             children: [
-              SvgPicture.asset("lib/assets/$image.svg",
-                  height: 20,
-                  colorFilter: ColorFilter.mode(
-                      _selectedIndex == index ? Colors.white : CustomColors().secondaryText, BlendMode.srcIn)),
+              SvgPicture.asset(
+                "lib/assets/$image.svg",
+                height: 20,
+                colorFilter: ColorFilter.mode(
+                  _selectedIndex == index
+                      ? Colors.white
+                      : CustomColors().secondaryText,
+                  BlendMode.srcIn,
+                ),
+              ),
+              SizedBox(width: 12),
               Text(
                 name,
                 style: GoogleFonts.commissioner(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: _selectedIndex == index ? Colors.white : CustomColors().secondaryText,
+                  color: _selectedIndex == index
+                      ? Colors.white
+                      : CustomColors().secondaryText,
                 ),
               ),
             ],

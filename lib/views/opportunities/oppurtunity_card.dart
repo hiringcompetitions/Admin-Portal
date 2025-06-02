@@ -238,11 +238,17 @@ class _OpportunityCardState extends State<OpportunityCard> {
           
               // Title 
           
-              Text("Oppurtunity Title *", style: GoogleFonts.poppins(
-                fontSize: 15,
-                color: Colors.grey.shade900,
-                fontWeight: FontWeight.w600
-              ),),
+              Row(
+                        children: [
+                          Text("Title", style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600
+                          ),),
+                          SizedBox(width: 3,),
+                          Text('*',style: TextStyle(fontSize: 15,color: Colors.red),)
+                        ],
+                      ),
               SizedBox(height: 10,),
               CustomTextBar(hintText: "Eg. Google Summer of Code (GSOC)", controller: _titleController, width: 1080,),
               SizedBox(height: 20,),
@@ -256,11 +262,17 @@ class _OpportunityCardState extends State<OpportunityCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Category *", style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.grey.shade900,
-                        fontWeight: FontWeight.w600
-                      ),),
+                     Row(
+                        children: [
+                          Text("Category", style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600
+                          ),),
+                          SizedBox(width: 3,),
+                          Text('*',style: TextStyle(fontSize: 15,color: Colors.red),)
+                        ],
+                      ),
                       SizedBox(height: 10,),
                       CustomDropdown(items: items, selectedValue: widget.selectedCategory, onChanged: (value) {
                         setState(() {
@@ -275,11 +287,17 @@ class _OpportunityCardState extends State<OpportunityCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Organization *", style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.grey.shade900,
-                        fontWeight: FontWeight.w600
-                      ),),
+                      Row(
+                        children: [
+                          Text("Oppurtunity", style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600
+                          ),),
+                          SizedBox(width: 3,),
+                          Text('*',style: TextStyle(fontSize: 15,color: Colors.red),)
+                        ],
+                      ),
                       SizedBox(height: 10,),
                       CustomTextBar(hintText: "Eg. Google", controller: _organizationController, width: 320,),
                     ],
@@ -290,11 +308,17 @@ class _OpportunityCardState extends State<OpportunityCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Eligibility *", style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.grey.shade900,
-                        fontWeight: FontWeight.w600
-                      ),),
+                      Row(
+                        children: [
+                          Text("Eligibility", style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600
+                          ),),
+                          SizedBox(width: 3,),
+                          Text('*',style: TextStyle(fontSize: 15,color: Colors.red),)
+                        ],
+                      ),
                       SizedBox(height: 10,),
                       CustomMultiSelector(items: _items, selectedtems: widget.eligibility, onConfirm: (values) {
                         setState(() {
@@ -331,11 +355,17 @@ class _OpportunityCardState extends State<OpportunityCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Last Date *", style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.grey.shade900,
-                        fontWeight: FontWeight.w600
-                      ),),
+                      Row(
+                        children: [
+                          Text("Last Date", style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600
+                          ),),
+                          SizedBox(width: 3,),
+                          Text('*',style: TextStyle(fontSize: 15,color: Colors.red),)
+                        ],
+                      ),
                       SizedBox(height: 10,),
                       GestureDetector(
                         onTap: () {
@@ -477,11 +507,17 @@ class _OpportunityCardState extends State<OpportunityCard> {
               SizedBox(height: 20,),
 
               // URL of the Opportunity
-              Text("URL *", style: GoogleFonts.poppins(
-                fontSize: 15,
-                color: Colors.grey.shade900,
-                fontWeight: FontWeight.w600
-              ),),
+              Row(
+                        children: [
+                          Text("URL", style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            color: Colors.grey.shade900,
+                            fontWeight: FontWeight.w600
+                          ),),
+                          SizedBox(width: 3,),
+                          Text('*',style: TextStyle(fontSize: 15,color: Colors.red),)
+                        ],
+                      ),
               SizedBox(height: 8,),
               Row(
                 children: [

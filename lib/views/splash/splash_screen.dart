@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       // if not logged in
       if(provider.user == null) {
-        Navigator.pushReplacementNamed(context, '/login');
+        GoRouter.of(context).go('/login');
         return;
       }
 
@@ -40,12 +41,12 @@ class _SplashScreenState extends State<SplashScreen> {
         final status = data['status'] ?? 'Pending';
 
         if(status == "Approved" || status == "Admin") {
-          Navigator.pushReplacementNamed(context, '/home');
+          GoRouter.of(context).go('/home');
         } else {
-          Navigator.pushReplacementNamed(context, '/login');
+          GoRouter.of(context).go('/login');
         }
       } else {
-        Navigator.pushReplacementNamed(context, '/login');
+        GoRouter.of(context).go('/login');
       }
     });
   }

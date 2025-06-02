@@ -1,5 +1,6 @@
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
@@ -46,7 +47,7 @@ class Login extends StatelessWidget {
           } else if(status == "Removed") {
             CustomError("error").showToast(context, "You no longer have the access to this portal.");
           } else {
-            Navigator.pushReplacementNamed(context, '/home');
+            GoRouter.of(context).go('/home');
           }
         }
       } else {
@@ -172,7 +173,8 @@ class Login extends StatelessWidget {
                               ),),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/signup');
+                                  print("hello");
+                                  GoRouter.of(context).go('/signup');
                                 },
                                 child: MouseRegion(
                                   cursor: SystemMouseCursors.click,

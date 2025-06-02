@@ -8,7 +8,6 @@ import 'package:hiring_competitions_admin_portal/constants/error_formatter.dart'
 class FirestoreServices {
   // instance
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   // Add Admin User
   Future<String?> addUser(UserModel user, String uid) async {
     try {
