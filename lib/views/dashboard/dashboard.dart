@@ -1,5 +1,3 @@
-import 'package:avatar_plus/avatar_plus.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
@@ -9,9 +7,9 @@ import 'package:hiring_competitions_admin_portal/views/auth/widgets/custom_text_
 import 'package:hiring_competitions_admin_portal/views/dashboard/widgets/chart.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/widgets/data_card.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/widgets/top_picks_card.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class Dashboard extends StatefulWidget {
   TextEditingController _batchController = TextEditingController();
   Dashboard({super.key});

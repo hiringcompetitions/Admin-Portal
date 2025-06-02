@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_final_fields, must_be_immutable
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/models/opportunity_model.dart';

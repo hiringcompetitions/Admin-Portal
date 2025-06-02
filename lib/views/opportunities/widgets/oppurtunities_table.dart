@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hiring_competitions_admin_portal/backend/models/opportunity_model.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';

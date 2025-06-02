@@ -3,47 +3,12 @@ import 'dart:html' as html;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hiring_competitions_admin_portal/backend/app/go_router.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/category_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/theme.dart';
 import 'package:hiring_competitions_admin_portal/firebase_options.dart';
 import 'package:provider/provider.dart';
 
-final GoRouter router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => SplashScreen(),
-    ),
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => Login(),
-    ),
-    GoRoute(
-      path: '/signup',
-      builder: (context, state) => Signup(),
-    ),
-    GoRoute(
-      path: '/home',
-      redirect: (context, state) {
-        final isLoggedIn = FirebaseAuth.instance.currentUser != null;
-        return isLoggedIn ? null : '/login';
-      },
-      builder: (context, state) => Sidebar(),
-      routes: [
-        GoRoute(
-          path: 'applicants', // Becomes /home/applicants
-          builder: (context, state) {
-            final data = state.extra as ApplicantsData;
-            return Applicants(data: data);
-          },
-        ),
-      ],
-    ),
-  ],
-);
 
 void main() {
   runZonedGuarded(() async {

@@ -19,7 +19,8 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   int _selectedIndex = 0;
-  String _selectedRoute = '/opportunities';
+  // ignore: unused_field
+  String _selectedRoute='';
 
   String? status;
 
