@@ -83,6 +83,7 @@ class ApplicantsTableState extends State<ApplicantsTable> {
   @override
   Widget build(BuildContext context) {
     final outercontext = context;
+    // ignore: unused_local_variable
     final provider = Provider.of<FirestoreProvider>(context, listen: false);
 
     final List<PlutoColumn> columns = <PlutoColumn>[

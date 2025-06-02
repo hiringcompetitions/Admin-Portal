@@ -21,32 +21,37 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      final provider = Provider.of<CustomAuthProvider>(context, listen: false);
-      final firestoreProvider = Provider.of<FirestoreProvider>(context, listen: false);
-      await provider.checkLogin();
-      await Future.delayed(Duration(seconds: 1));
+      try {
+        final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
+        final firestoreProvider = Provider.of<FirestoreProvider>(context, listen: false);
 
-      // if not logged in
-      if(provider.user == null) {
-        GoRouter.of(context).go('/login');
-        return;
-      }
+        await authProvider.checkLogin();
+        await Future.delayed(const Duration(seconds: 1)); // for smooth transition
 
-      // check the status
-      final doc = await firestoreProvider.getAdminStatus(provider.user!.uid);
-
-      if(doc != null && doc.data() != null) {
-        final data = doc.data() as Map<String, dynamic>;
-
-        final status = data['status'] ?? 'Pending';
-
-        if(status == "Approved" || status == "Admin") {
-          GoRouter.of(context).go('/home');
-        } else {
-          GoRouter.of(context).go('/login');
+        // If user not logged in
+        if (authProvider.user == null) {
+          context.go('/login');
+          return;
         }
-      } else {
-        GoRouter.of(context).go('/login');
+
+        // Fetch admin status from Firestore
+        final doc = await firestoreProvider.getAdminStatus(authProvider.user!.uid);
+
+        if (doc != null && doc.data() != null) {
+          final data = doc.data() as Map<String, dynamic>;
+          final status = data['status'] ?? 'Pending';
+
+          if (status == 'Approved' || status == 'Admin') {
+            context.go('/home');
+          } else {
+            context.go('/login');
+          }
+        } else {
+          context.go('/login');
+        }
+      } catch (e) {
+        // fallback route if any unexpected error
+        context.go('/login');
       }
     });
   }
@@ -54,19 +59,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text(
-              "Hiring Competitions",
-              style: GoogleFonts.poppins(
-                  fontSize: 34,
-                  color: CustomColors().primaryText,
-                  fontWeight: FontWeight.w600),
-            ),
+      backgroundColor: CustomColors().background,
+      body: Center(
+        child: Text(
+          "Hiring Competitions",
+          style: GoogleFonts.poppins(
+            fontSize: 34,
+            fontWeight: FontWeight.w600,
+            color: CustomColors().primaryText,
           ),
-        ],
+        ),
       ),
     );
   }

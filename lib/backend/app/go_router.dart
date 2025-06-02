@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hiring_competitions_admin_portal/views/adminUsers/admin_users.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/login.dart';
@@ -43,20 +42,20 @@ final GoRouter router = GoRouter(
       builder: (context, state) => Signup(),
     ),
 
-    // ShellRoute with sidebar layout
+    // ShellRoute
     ShellRoute(
       builder: (context, state, child) => Sidebar(child: child),
       routes: [
         GoRoute(
-          path: '/home', // 👈 base route
+          path: '/home', 
           builder: (context, state) => Dashboard(),
           routes: [
             GoRoute(
-              path: '/opportunities', // 👈 becomes /home/opportunities
+              path: '/opportunities', 
               builder: (context, state) => Opportunities(),
             ),
             GoRoute(
-              path: '/users', // 👈 becomes /home/users
+              path: '/users', 
               builder: (context, state) => Users(),
             ),
             GoRoute(

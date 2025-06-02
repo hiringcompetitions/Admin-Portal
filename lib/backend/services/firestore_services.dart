@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hiring_competitions_admin_portal/backend/models/opportunity_model.dart';
 import 'package:hiring_competitions_admin_portal/backend/models/user_model.dart';
-import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/constants/error_formatter.dart';
 
 class FirestoreServices {

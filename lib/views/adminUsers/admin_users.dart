@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/adminUsers/widgets/admin_users_table.dart';
-import 'package:hiring_competitions_admin_portal/views/users/users_table.dart';
 
 class AdminUsers extends StatelessWidget {
   const AdminUsers({super.key});
@@ -72,6 +71,7 @@ class AdminUsers extends StatelessWidget {
                               final bytes = utf8.encode(csvString);
                               final blob = html.Blob([bytes]);
                               final url = html.Url.createObjectUrlFromBlob(blob);
+                              // ignore: unused_local_variable
                               final anchor = html.AnchorElement(href: url)
                               ..setAttribute("download", "users.csv")
                               ..click();
