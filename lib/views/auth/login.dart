@@ -47,7 +47,7 @@ class Login extends StatelessWidget {
           } else if(status == "Removed") {
             CustomError("error").showToast(context, "You no longer have the access to this portal.");
           } else {
-            context.go('/home');
+            GoRouter.of(context).go('/home');
           }
         }
       } else {
@@ -173,7 +173,7 @@ class Login extends StatelessWidget {
                               ),),
                               GestureDetector(
                                 onTap: () {
-                                  context.go('/signup');
+                                  GoRouter.of(context).go('/signup');
                                 },
                                 child: MouseRegion(
                                   cursor: SystemMouseCursors.click,

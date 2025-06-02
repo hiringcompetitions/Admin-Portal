@@ -1,20 +1,13 @@
 import 'dart:async';
 import 'dart:html' as html;
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:hiring_competitions_admin_portal/backend/app/go_router.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/category_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/theme.dart';
 import 'package:hiring_competitions_admin_portal/firebase_options.dart';
-import 'package:hiring_competitions_admin_portal/views/applicants/applicants.dart';
-import 'package:hiring_competitions_admin_portal/views/applicants/widgets/applicants_data.dart';
-import 'package:hiring_competitions_admin_portal/views/auth/login.dart';
-import 'package:hiring_competitions_admin_portal/views/auth/signup.dart';
-import 'package:hiring_competitions_admin_portal/views/sidebar.dart';
-import 'package:hiring_competitions_admin_portal/views/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 final GoRouter router = GoRouter(
@@ -79,10 +72,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
       ],
       child: MaterialApp.router(
+        routerConfig: router,
         theme: getAppTheme(),
         debugShowCheckedModeBanner: false,
         title: 'Hiring Competitions',
-        routerConfig: router,
       ),
     );
   }

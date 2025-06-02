@@ -51,7 +51,7 @@ class Signup extends StatelessWidget {
             if(status == 'Pending') {
               CustomError("error").showToast(context, "Your account is awaiting approval. Please contact the admin for confirmation.");
             } else {
-              context.go('/home');
+              GoRouter.of(context).go('/home');
             }
           }
         } else {
@@ -168,7 +168,7 @@ class Signup extends StatelessWidget {
                               ),),
                               GestureDetector(
                                 onTap: () {
-                                  context.go('/login');
+                                  GoRouter.of(context).go('/login');
                                 },
                                 child: MouseRegion(
                                   cursor: SystemMouseCursors.click,

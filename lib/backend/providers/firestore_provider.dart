@@ -31,6 +31,7 @@ class FirestoreProvider extends ChangeNotifier {
   // Get Admin Status
   Future<DocumentSnapshot?> getAdminStatus(String uid) async {
     try {
+      
       return await _services.getAdminStatus(uid);
     } on FirebaseException catch(e) {
       return null;

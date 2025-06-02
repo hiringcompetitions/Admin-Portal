@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
       // if not logged in
       if(provider.user == null) {
-        context.go('/login');
+        GoRouter.of(context).go('/login');
         return;
       }
 
@@ -41,12 +41,12 @@ class _SplashScreenState extends State<SplashScreen> {
         final status = data['status'] ?? 'Pending';
 
         if(status == "Approved" || status == "Admin") {
-          context.go('/home');
+          GoRouter.of(context).go('/home');
         } else {
-          context.go('/login');
+          GoRouter.of(context).go('/login');
         }
       } else {
-        context.go('/login');
+        GoRouter.of(context).go('/login');
       }
     });
   }

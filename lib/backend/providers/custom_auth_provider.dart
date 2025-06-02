@@ -83,6 +83,7 @@ class CustomAuthProvider extends ChangeNotifier {
 
   Future<void> checkLogin() async {
     _user = FirebaseAuth.instance.currentUser;
+    print(_user!.displayName);
     notifyListeners();
   }
 }
