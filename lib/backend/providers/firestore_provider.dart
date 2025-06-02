@@ -28,7 +28,7 @@ class FirestoreProvider extends ChangeNotifier {
     }
   }
 
-  // Get Admin User
+  // Get Admin Status
   Future<DocumentSnapshot?> getAdminStatus(String uid) async {
     try {
       return await _services.getAdminStatus(uid);
@@ -42,6 +42,30 @@ class FirestoreProvider extends ChangeNotifier {
     return _services.getUsers();
   }
 
+  // Get Users by Batch
+  Stream<QuerySnapshot> getUsersByBatch(String batch) {
+    return _services.getUsersByBatch(batch);
+  }
+
+  // Get Batches
+  Stream<QuerySnapshot> getBatches() {
+    return _services.getBatches();
+  }
+
+  // Add New Batch
+  Future<String?> addNewBatch(int batch) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final res = await _services.addNewBatch(batch);
+      _isLoading = false;
+      notifyListeners();
+      return res;
+    } catch(e) {
+      return "An unexpected error Occured. Please try again later";
+    }
+  }
+ 
   // Get Admin Users
   Stream<QuerySnapshot> getAdminUsers() {
     return _services.getAdminUsers();
@@ -61,6 +85,7 @@ class FirestoreProvider extends ChangeNotifier {
     }
   } 
 
+  // Update Opportunity
   Future<String?> updateOpportunity(OpportunityModel opportunity) async {
     try {
       _isLoading = true;
@@ -94,5 +119,15 @@ class FirestoreProvider extends ChangeNotifier {
     } catch(e) {
       return "Unexpected error occured. Please try again later";
     }
+  }
+
+  // APPLICANTS
+  Stream<QuerySnapshot> getApplicants(String uid) {
+    return _services.getApplicants(uid);
+  }
+
+  // SELECTED APPLICANTS COUNT
+  Stream<QuerySnapshot> getSelectedCount(String uid) {
+    return _services.getSelectedCount(uid);
   }
 }

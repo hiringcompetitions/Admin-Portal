@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/models/user_model.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
@@ -50,7 +51,7 @@ class Signup extends StatelessWidget {
             if(status == 'Pending') {
               CustomError("error").showToast(context, "Your account is awaiting approval. Please contact the admin for confirmation.");
             } else {
-              Navigator.pushReplacementNamed(context, '/home');
+              context.go('/home');
             }
           }
         } else {
@@ -167,7 +168,7 @@ class Signup extends StatelessWidget {
                               ),),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  context.go('/login');
                                 },
                                 child: MouseRegion(
                                   cursor: SystemMouseCursors.click,
