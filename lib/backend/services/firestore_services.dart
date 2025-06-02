@@ -29,9 +29,29 @@ class FirestoreServices {
     }
   }
 
-  // Get Users
+  // Get Total Users
   Stream<QuerySnapshot> getUsers() {
     return _firestore.collection("Users").snapshots();
+  }
+
+  // Get Users by Batch
+  Stream<QuerySnapshot> getUsersByBatch(String batch) {
+    return _firestore.collection("Users").where("passedOutYear", isEqualTo: batch).snapshots();
+  }
+
+  // Get Batches
+  Stream<QuerySnapshot> getBatches() {
+    return _firestore.collection("Batches").snapshots();
+  }
+
+  // Add New Batch
+  Future<String?> addNewBatch(int batch) async {
+    try {
+      await _firestore.collection("Batches").doc().set({"batch" : batch});
+      return null;
+    } catch(e) {
+      return e.toString();
+    }
   }
 
   // Get Admin Users
@@ -53,6 +73,7 @@ class FirestoreServices {
     }
   }
 
+  // UPDATE Opportunity
   Future<String?> updateOpportunity(OpportunityModel opportunity) async {
     try {
       await _firestore
@@ -106,5 +127,24 @@ class FirestoreServices {
     } catch(e) {
       print(e.toString());
     }
-  } 
+  }
+
+  // APPLICANTS
+  Stream<QuerySnapshot> getApplicants(String uid) {
+    return _firestore
+        .collection("Opportunities")
+        .doc(uid)
+        .collection("Applicants")
+        .snapshots();
+  }
+
+  // SELECTED APPLICANTS
+  Stream<QuerySnapshot> getSelectedCount(String uid) {
+    return _firestore
+        .collection("Opportunities")
+        .doc(uid)
+        .collection("Applicants")
+        .where("Status", isEqualTo: "Selected")
+        .snapshots();
+  }
 }

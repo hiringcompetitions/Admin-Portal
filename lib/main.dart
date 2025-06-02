@@ -10,6 +10,41 @@ import 'package:hiring_competitions_admin_portal/constants/theme.dart';
 import 'package:hiring_competitions_admin_portal/firebase_options.dart';
 import 'package:provider/provider.dart';
 
+final GoRouter router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => SplashScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => Login(),
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => Signup(),
+    ),
+    GoRoute(
+      path: '/home',
+      redirect: (context, state) {
+        final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+        return isLoggedIn ? null : '/login';
+      },
+      builder: (context, state) => Sidebar(),
+      routes: [
+        GoRoute(
+          path: 'applicants', // Becomes /home/applicants
+          builder: (context, state) {
+            final data = state.extra as ApplicantsData;
+            return Applicants(data: data);
+          },
+        ),
+      ],
+    ),
+  ],
+);
+
 void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +68,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => DropdownProvider()),
         ChangeNotifierProvider(create: (_) => CustomAuthProvider()),
         ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
       ],
@@ -42,24 +76,8 @@ class MyApp extends StatelessWidget {
         theme: getAppTheme(),
         debugShowCheckedModeBanner: false,
         title: 'Hiring Competitions',
-        // initialRoute: '/',
-        // routes: {
-        //   '/' : (context) => SplashScreen(),
-        //   '/login' : (context) => Login(),
-        //   '/signup' : (context) => Signup(),
-        //   '/home' : (context) {
-        //     final isLoggedIn = FirebaseAuth.instance.currentUser != null;
-        //     if(isLoggedIn) {
-        //       return Sidebar();
-        //     } else {
-        //       Future.microtask(() {
-        //         Navigator.pushReplacementNamed(context, '/login');
-        //       });
-        //       return Center(child: CircularProgressIndicator(),);
-        //     }
-        //   },
-        // },
       ),
     );
   }
 }
+

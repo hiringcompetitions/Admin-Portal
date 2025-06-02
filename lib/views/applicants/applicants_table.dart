@@ -1,24 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hiring_competitions_admin_portal/backend/models/opportunity_model.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
-import 'package:hiring_competitions_admin_portal/views/applicants/widgets/applicants_data.dart';
-import 'package:hiring_competitions_admin_portal/views/opportunities/oppurtunity_card.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 
-class OppurtunitiesTable extends StatefulWidget {
-  const OppurtunitiesTable({Key? key}) : super(key: key);
+class ApplicantsTable extends StatefulWidget {
+  final Stream stream;
+  const ApplicantsTable({
+    Key? key,
+    required this.stream,
+  }) : super(key: key);
 
   @override
-  OppurtunitiesTableState createState() => OppurtunitiesTableState();
+  ApplicantsTableState createState() => ApplicantsTableState();
 }
 
-class OppurtunitiesTableState extends State<OppurtunitiesTable> {
+class ApplicantsTableState extends State<ApplicantsTable> {
   PlutoGridStateManager? stateManager;
 
   void reloadState() {
@@ -83,178 +82,59 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<FirestoreProvider>(context);
     final outercontext = context;
+    final provider = Provider.of<FirestoreProvider>(context, listen: false);
 
     final List<PlutoColumn> columns = <PlutoColumn>[
       PlutoColumn(
-        title: 'Title',
-        field: 'title',
+        title: 'Name',
+        field: 'name',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
       PlutoColumn(
-        title: 'Category',
-        field: 'category',
+        title: 'Roll No',
+        field: 'rollNo',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
       PlutoColumn(
-        title: 'Organization',
-        field: 'company',
+        title: 'Branch',
+        field: 'branch',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
       PlutoColumn(
-        title: 'Eligibility',
-        field: 'eligibility',
+        title: 'Passed Out Year',
+        field: 'year',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
       PlutoColumn(
-        title: 'Duration',
-        field: 'duration',
+        title: 'Applied On',
+        field: 'appliedOn',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
       PlutoColumn(
-        title: 'Last Date',
-        field: 'lastDate',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'Payout',
-        field: 'payout',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'Location',
-        field: 'location',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'Event Date',
-        field: 'eventDate',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'Url',
-        field: 'url',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'About',
-        field: 'about',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'Other Info',
-        field: 'otherInfo',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'Is Important',
-        field: 'isImportant',
-        type: PlutoColumnType.text(),
-        readOnly: true,
-      ),
-      PlutoColumn(
-        title: 'UID',
-        field: 'uid',
+        title: 'Status',
+        field: 'status',
         type: PlutoColumnType.text(),
         readOnly: true,
       ),
       PlutoColumn(
         title: 'Action',
         field: 'action',
-        width: 250,
         type: PlutoColumnType.text(),
         renderer: (PlutoColumnRendererContext context) {
-          final title = context.row.cells['title']?.value;
-          final category = context.row.cells['category']?.value;
-          final organization = context.row.cells['company']?.value;
-          final eligibility = context.row.cells['eligibility']?.value;
-          final duration = context.row.cells['duration']?.value;
-          final lastDate = context.row.cells['lastDate']?.value;
-          final payout = context.row.cells['payout']?.value;
-          final location = context.row.cells['location']?.value;
-          final eventDate = context.row.cells['eventDate']?.value;
-          final url = context.row.cells['url']?.value;
-          final about = context.row.cells['about']?.value;
-          final otherInfo = context.row.cells['otherInfo']?.value;
-          final isImportant = context.row.cells['isImportant']?.value;
-          final uid = context.row.cells['uid']?.value;
-
           return Row(
             spacing: 10,
             children: [
               RowButton(
                   Icon(
-                    Icons.edit,
+                    Icons.notification_add_outlined,
                     size: 20,
                   ), () async {
-                // Edit
-                await showDialog(
-                    context: outercontext,
-                    builder: (context) => Dialog(
-                          child: OpportunityCard(
-                              title: title,
-                              selectedCategory: category,
-                              organizationName: organization,
-                              eligibility: eligibility.split(','),
-                              duration: duration,
-                              lastDate: DateTime.parse(lastDate),
-                              uid: uid,
-                              payout: payout,
-                              location: location,
-                              eventDate: DateTime.parse(eventDate),
-                              about: about,
-                              otherInfo: otherInfo,
-                              buttonText: "Update",
-                              url: url,
-                              isImportant: isImportant == "Yes" ? true : false,
-                            ),
-                        ));
-              }, outercontext),
-              RowButton(
-                  Icon(
-                    Icons.delete,
-                    size: 20,
-                  ), () async {
-                // Delete the oppurtunity
-                await deleteConfirmation(outercontext, provider, title);
-                reloadState();
-              }, outercontext),
-              RowButton(
-                  Icon(
-                    Icons.groups_2,
-                    size: 20,
-                  ), () async {
-                outercontext.go('/home/applicants', extra: ApplicantsData(
-                  title: title ?? '', 
-                  companyName: organization ?? "", 
-                  category: category ?? "", 
-                  eligibility: eligibility ?? "", 
-                  lastDate: lastDate ?? "", 
-                  status: lastDate ?? "",
-                  uid: uid ?? "",
-                  stream: provider.getApplicants(uid ?? ''),
-                  selectedStream: provider.getSelectedCount(uid),
-                ));
-              }, outercontext),
-              RowButton(
-                  Icon(
-                    Icons.bar_chart_outlined,
-                    size: 20,
-                  ), () async {
-                // Show Analytics
               }, outercontext),
             ],
           );
@@ -263,7 +143,7 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
     ];
 
     return StreamBuilder(
-        stream: provider.getOpportunities(),
+        stream: widget.stream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -278,30 +158,18 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
           final data = snapshot.data;
 
           if (data != null) {
-            final rows = data.docs.map((doc) {
-              return PlutoRow(cells: {
-                'title': PlutoCell(value: doc['title']),
-                'category': PlutoCell(value: doc['category']),
-                'company': PlutoCell(value: doc['organization']),
-                'eligibility': PlutoCell(value: doc['eligibility']),
-                'duration': PlutoCell(value: doc['duration']),
-                'lastDate': PlutoCell(value: (doc['lastdate'] as Timestamp)
-                    .toDate()
-                    .toString()
-                    .substring(0, 10),),
-                'payout': PlutoCell(value: doc['payout']),
-                'location': PlutoCell(value: doc['location']),
-                'eventDate': PlutoCell(
-                    value: doc['eventDate'] != null
-                        ? doc['eventDate'].toDate().toString().substring(0, 10)
-                        : ''),
-                'url': PlutoCell(value: doc['url']),
-                'about': PlutoCell(value: doc['about']),
-                'otherInfo': PlutoCell(value: doc['otherInfo']),
-                'isImportant': PlutoCell(value: doc['isTopPick'] ? "Yes" : "No"),
-                'uid': PlutoCell(value: doc['uid']),
-                'action': PlutoCell(value: '')
-              });
+            final List<PlutoRow> rows = data.docs.map<PlutoRow>((doc) {
+              return PlutoRow(
+                cells: {
+                  'name': PlutoCell(value: doc['name']),
+                  'rollNo': PlutoCell(value: doc['rollNo']),
+                  'branch': PlutoCell(value: doc['branch']),
+                  'year': PlutoCell(value: doc['batch']),
+                  'appliedOn': PlutoCell(value: doc['appliedOn'].toDate().toString()),
+                  'status': PlutoCell(value: doc['status']),
+                  'action': PlutoCell(value: ''),
+                },
+              );
             }).toList();
 
             return Container(
@@ -320,7 +188,7 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
                 },
                 configuration: PlutoGridConfiguration(
                   columnSize: PlutoGridColumnSizeConfig(
-                    //autoSizeMode: PlutoAutoSizeMode.equal,
+                    autoSizeMode: PlutoAutoSizeMode.equal,
                     resizeMode: PlutoResizeMode.normal,
                   ),
                   style: PlutoGridStyleConfig(

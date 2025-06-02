@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_web_libraries_in_flutter, unused_local_variable
+
 import 'dart:convert';
 import 'dart:html' as html;
 
@@ -5,12 +7,9 @@ import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
-import 'package:hiring_competitions_admin_portal/backend/providers/opportunity_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/users/users_table.dart';
-import 'package:provider/provider.dart';
 
 class Users extends StatefulWidget {
   const Users({super.key});

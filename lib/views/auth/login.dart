@@ -1,4 +1,5 @@
-import 'package:elegant_notification/elegant_notification.dart';
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +7,6 @@ import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_p
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
-import 'package:hiring_competitions_admin_portal/views/auth/signup.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -119,7 +119,7 @@ class Login extends StatelessWidget {
                           child: Container(
                             width: 350,
                             alignment: Alignment.bottomRight,
-                            child: Text("Forgot Password", style: GoogleFonts.poppins(
+                            child: Text("Forgot Password ?", style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: CustomColors().secondaryText,
@@ -173,7 +173,6 @@ class Login extends StatelessWidget {
                               ),),
                               GestureDetector(
                                 onTap: () {
-                                  print("hello");
                                   GoRouter.of(context).go('/signup');
                                 },
                                 child: MouseRegion(
