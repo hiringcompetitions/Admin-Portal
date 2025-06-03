@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/views/adminUsers/admin_users.dart';
+import 'package:hiring_competitions_admin_portal/views/applicants/applicants.dart';
+import 'package:hiring_competitions_admin_portal/views/applicants/widgets/applicants_data.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/login.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/signup.dart';
 import 'package:hiring_competitions_admin_portal/views/dashboard/dashboard.dart';
@@ -8,25 +10,43 @@ import 'package:hiring_competitions_admin_portal/views/opportunities/opportuniti
 import 'package:hiring_competitions_admin_portal/views/sidebar.dart';
 import 'package:hiring_competitions_admin_portal/views/splash/splash_screen.dart';
 import 'package:hiring_competitions_admin_portal/views/users/users.dart';
+import 'package:provider/provider.dart';
 
 final GoRouter router = GoRouter(
   redirect: (context, state) {
-    final isLoggedIn = FirebaseAuth.instance.currentUser != null;
-    final currentPath = state.uri.toString().toLowerCase();
+  final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
+  final user = authProvider.user;
+  final adminStatus = authProvider.adminStatus;
+  final isInitialized = authProvider.isInitialized;
+  final currentPath = state.uri.toString().toLowerCase();
 
-    if (!isLoggedIn &&
-        currentPath != '/login' &&
-        currentPath != '/signup' &&
-        currentPath != '/') {
-      return '/login';
+  if (!isInitialized) {
+    // Still loading auth state, stay on splash screen
+    if (currentPath != '/') return '/';
+    return null;
+  }
+
+  if (user == null &&
+      currentPath != '/login' &&
+      currentPath != '/signup' &&
+      currentPath != '/') {
+    return '/login';
+  }
+
+  if (user != null) {
+    if (adminStatus == 'Pending' || adminStatus == 'Rejected' || adminStatus == 'Removed') {
+      return '/login'; // or some access denied page
     }
 
-    if (isLoggedIn && (currentPath == '/login' || currentPath == '/signup')) {
+    if ((currentPath == '/login' || currentPath == '/signup' || currentPath == '/') &&
+        (adminStatus == 'Approved' || adminStatus == 'Admin')) {
       return '/home';
     }
+  }
 
-    return null;
-  },
+  return null; // no redirect
+},
+
   routes: [
     // Public routes
     GoRoute(
@@ -51,20 +71,35 @@ final GoRouter router = GoRouter(
           builder: (context, state) => Dashboard(),
           routes: [
             GoRoute(
-              path: '/opportunities', 
-              builder: (context, state) => Opportunities(),
+                path: 'opportunities',
+                builder: (context, state) => Opportunities(),
+                routes: [
+                   GoRoute(
+              path: ':opportunityName/applications',
+              name: 'applications',
+              builder: (context, state) {
+                
+                final extraData = state.extra as ApplicantsData;
+                return Applicants(
+                  
+                  data: extraData,
+                );
+              },
             ),
+                ]),
             GoRoute(
-              path: '/users', 
+              path: 'users',
               builder: (context, state) => Users(),
             ),
             GoRoute(
-              path: '/adminusers',
+              path: 'adminusers',
               builder: (context, state) => AdminUsers(),
             ),
           ],
         ),
       ],
     ),
+
+    //opputunities routes
   ],
 );

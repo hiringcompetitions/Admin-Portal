@@ -17,44 +17,26 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  void initState() {
-    super.initState();
+void initState() {
+  super.initState();
 
-    Future.delayed(Duration.zero, () async {
-      try {
-        final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
-        final firestoreProvider = Provider.of<FirestoreProvider>(context, listen: false);
+  Future.delayed(Duration.zero, () async {
+    final authProvider = Provider.of<CustomAuthProvider>(context, listen: false);
+    await authProvider.checkLogin();
 
-        await authProvider.checkLogin();
-        await Future.delayed(const Duration(seconds: 1)); // for smooth transition
+    if (authProvider.user == null) {
+      context.go('/login');
+      return;
+    }
 
-        // If user not logged in
-        if (authProvider.user == null) {
-          context.go('/login');
-          return;
-        }
-
-        // Fetch admin status from Firestore
-        final doc = await firestoreProvider.getAdminStatus(authProvider.user!.uid);
-
-        if (doc != null && doc.data() != null) {
-          final data = doc.data() as Map<String, dynamic>;
-          final status = data['status'] ?? 'Pending';
-
-          if (status == 'Approved' || status == 'Admin') {
-            context.go('/home');
-          } else {
-            context.go('/login');
-          }
-        } else {
-          context.go('/login');
-        }
-      } catch (e) {
-        // fallback route if any unexpected error
-        context.go('/login');
-      }
-    });
-  }
+    final status = authProvider.adminStatus;
+    if (status == 'Approved' || status == 'Admin') {
+      context.go('/home');
+    } else {
+      context.go('/login');
+    }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
