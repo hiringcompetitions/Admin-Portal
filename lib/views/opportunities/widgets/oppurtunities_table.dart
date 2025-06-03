@@ -204,22 +204,22 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
                     context: outercontext,
                     builder: (context) => Dialog(
                           child: OpportunityCard(
-                              title: title,
-                              selectedCategory: category,
-                              organizationName: organization,
-                              eligibility: eligibility.split(','),
-                              duration: duration,
-                              lastDate: DateTime.parse(lastDate),
-                              uid: uid,
-                              payout: payout,
-                              location: location,
-                              eventDate: DateTime.parse(eventDate),
-                              about: about,
-                              otherInfo: otherInfo,
-                              buttonText: "Update",
-                              url: url,
-                              isImportant: isImportant == "Yes" ? true : false,
-                            ),
+                            title: title,
+                            selectedCategory: category,
+                            organizationName: organization,
+                            eligibility: eligibility.split(','),
+                            duration: duration,
+                            lastDate: DateTime.parse(lastDate),
+                            uid: uid,
+                            payout: payout,
+                            location: location,
+                            eventDate: DateTime.parse(eventDate),
+                            about: about,
+                            otherInfo: otherInfo,
+                            buttonText: "Update",
+                            url: url,
+                            isImportant: isImportant == "Yes" ? true : false,
+                          ),
                         ));
               }, outercontext),
               RowButton(
@@ -236,17 +236,22 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
                     Icons.groups_2,
                     size: 20,
                   ), () async {
-                outercontext.go('/home/applicants', extra: ApplicantsData(
-                  title: title ?? '', 
-                  companyName: organization ?? "", 
-                  category: category ?? "", 
-                  eligibility: eligibility ?? "", 
-                  lastDate: lastDate ?? "", 
-                  status: lastDate ?? "",
-                  uid: uid ?? "",
-                  stream: provider.getApplicants(uid ?? ''),
-                  selectedStream: provider.getSelectedCount(uid),
-                ));
+                 final safeTitle = (title ?? '').trim().toLowerCase().replaceAll(RegExp(r'\s+'), '-');
+                 final path = '/home/opportunities/${Uri.encodeComponent(safeTitle)}/applications';
+                outercontext.go(
+                  path,
+                  extra: ApplicantsData(
+                    title: title ?? '',
+                    companyName: organization ?? '',
+                    category: category ?? '',
+                    eligibility: eligibility ?? '',
+                    lastDate: lastDate ?? '',
+                    status: lastDate ?? '',
+                    uid: uid ?? '',
+                    stream: provider.getApplicants(uid ?? ''),
+                    selectedStream: provider.getSelectedCount(uid ?? ''),
+                  ),
+                );
               }, outercontext),
               RowButton(
                   Icon(
@@ -284,10 +289,12 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
                 'company': PlutoCell(value: doc['organization']),
                 'eligibility': PlutoCell(value: doc['eligibility']),
                 'duration': PlutoCell(value: doc['duration']),
-                'lastDate': PlutoCell(value: (doc['lastdate'] as Timestamp)
-                    .toDate()
-                    .toString()
-                    .substring(0, 10),),
+                'lastDate': PlutoCell(
+                  value: (doc['lastdate'] as Timestamp)
+                      .toDate()
+                      .toString()
+                      .substring(0, 10),
+                ),
                 'payout': PlutoCell(value: doc['payout']),
                 'location': PlutoCell(value: doc['location']),
                 'eventDate': PlutoCell(
@@ -297,7 +304,8 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
                 'url': PlutoCell(value: doc['url']),
                 'about': PlutoCell(value: doc['about']),
                 'otherInfo': PlutoCell(value: doc['otherInfo']),
-                'isImportant': PlutoCell(value: doc['isTopPick'] ? "Yes" : "No"),
+                'isImportant':
+                    PlutoCell(value: doc['isTopPick'] ? "Yes" : "No"),
                 'uid': PlutoCell(value: doc['uid']),
                 'action': PlutoCell(value: '')
               });

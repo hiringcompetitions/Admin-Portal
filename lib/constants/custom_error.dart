@@ -8,15 +8,19 @@ class CustomError {
   );
 
   void showToast(BuildContext context, String desc) {
-    if(state == "error") {
+    if (state == "error") {
       ElegantNotification.error(
-        width: 300, 
-        title: Text("Oops!"),
-        description: Text(desc),
-      ).show(context);
-    } else if(state == "success") {
+          width: 300,
+          title: Text("Oops!"),
+          description: SizedBox(
+            height: 50, 
+            child: SingleChildScrollView(
+              child: SelectableText(desc),
+            ),
+          )).show(context);
+    } else if (state == "success") {
       ElegantNotification.success(
-        width: 300, 
+        width: 300,
         title: Text('Success'),
         description: Text(desc),
       ).show(context);

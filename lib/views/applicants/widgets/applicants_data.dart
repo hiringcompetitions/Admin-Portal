@@ -2,7 +2,7 @@ class ApplicantsData {
   String title;
   String companyName;
   String category;
-  String eligibility;
+  List<dynamic> eligibility;
   String lastDate;
   String status;
   String uid;

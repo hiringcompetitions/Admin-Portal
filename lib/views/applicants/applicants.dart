@@ -149,7 +149,7 @@ class _ApplicantsState extends State<Applicants> {
                                           fontWeight: FontWeight.w400,
                                           color: CustomColors().secondaryText,
                                         )),
-                                    Text(widget.data.eligibility,
+                                    Text(widget.data.eligibility.join(),
                                         style: GoogleFonts.poppins(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,

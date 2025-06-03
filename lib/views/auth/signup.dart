@@ -9,6 +9,7 @@ import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/auth/widgets/custom_text_field.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class Signup extends StatelessWidget {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();

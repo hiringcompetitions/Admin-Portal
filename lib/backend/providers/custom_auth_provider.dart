@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/services/custom_auth_services.dart';
 
 class CustomAuthProvider extends ChangeNotifier {
@@ -12,9 +13,27 @@ class CustomAuthProvider extends ChangeNotifier {
   User? _user;
   User? get user => _user;
 
+  final FirestoreProvider firestoreProvider;
+
+  CustomAuthProvider({required this.firestoreProvider});
+
+  String? adminStatus;
+  bool isInitialized = false;
+
+
+  Future<void> fetchAdminStatus() async {
+    final doc = await firestoreProvider.getAdminStatus(user!.uid);
+    if (doc != null && doc.data() != null) {
+      final data = doc.data() as Map<String, dynamic>;
+      adminStatus = data['status'] ?? 'Pending';
+    } else {
+      adminStatus = 'Pending';
+    }
+  }
+
+
 
   // Login
-
   Future<String?> login(String email, String password) async {
     try {
       _isloading = true;
@@ -71,18 +90,32 @@ class CustomAuthProvider extends ChangeNotifier {
   // Logout
 
   Future<String?> logout() async {
-    try {
-      await _authServices.logout();
-      return null;
-    } catch(e) {
-      return "Unexpected error occured. Please try again later";
-    }
+  try {
+    await _authServices.logout();  
+    
+    _user = null;
+    adminStatus = null;
+    isInitialized = false;
+    notifyListeners();
+
+    return null;
+  } catch(e) {
+    return "Unexpected error occured. Please try again later";
   }
+}
+
 
   // Check Login status
 
   Future<void> checkLogin() async {
     _user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await fetchAdminStatus();
+    } else {
+      adminStatus = null;
+    }
+
+    isInitialized = true;
     notifyListeners();
   }
 }

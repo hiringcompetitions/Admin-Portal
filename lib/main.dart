@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:html' as html;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hiring_competitions_admin_portal/backend/app/go_router.dart';
@@ -17,7 +18,7 @@ void main() {
     html.window.onPopState.listen((event) {
       html.window.history.pushState(null, '', html.window.location.href);
     });
-
+     await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
     html.window.history.pushState(null, '', html.window.location.href);
     runApp(MyApp());
   }, (error, stack) {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CustomAuthProvider()),
+        ChangeNotifierProvider(create: (_) => CustomAuthProvider(firestoreProvider: FirestoreProvider())),
         ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
       ],
       child: MaterialApp.router(
