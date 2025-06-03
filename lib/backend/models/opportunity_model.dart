@@ -4,7 +4,7 @@ class OpportunityModel {
   final String title;
   final String category;
   final String organization;
-  final String eligibility;
+  final List<String> eligibility;
   final String duration;
   final DateTime lastdate;
   final String payout;
@@ -13,6 +13,7 @@ class OpportunityModel {
   final String about;
   final String otherInfo;
   final bool isTopPick;
+  final bool isActive;
   final String url;
   final DateTime timestamp;
   final String uid;
@@ -30,6 +31,7 @@ class OpportunityModel {
     required this.about,
     required this.otherInfo,
     required this.isTopPick,
+    required this.isActive,
     required this.url,
     required this.timestamp,
     required this.uid,
@@ -55,6 +57,7 @@ class OpportunityModel {
       'about': about,
       'otherInfo': otherInfo,
       'isTopPick': isTopPick,
+      'isActive': isActive,
       'url':url,
       'timestamp': timestamp,
       'uid':uid
@@ -83,6 +86,7 @@ class OpportunityModel {
       about: map['about'] ?? '',
       otherInfo: map['otherInfo'] ?? '',
       isTopPick: map['isTopPick'] ?? false,
+      isActive: map['isActive'] ?? true,
       url: map['url']??'',  
       timestamp: map['timestamp'],
       uid: map['uid']??'',
