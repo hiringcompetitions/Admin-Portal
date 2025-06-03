@@ -130,4 +130,14 @@ class FirestoreProvider extends ChangeNotifier {
   Stream<QuerySnapshot> getSelectedCount(String uid) {
     return _services.getSelectedCount(uid);
   }
+
+  // Get Top Picks
+  Stream<QuerySnapshot> getTopPicks() {
+    return _services.getTopPicks();
+  }
+
+  // Update status of opportunities
+  void updateOpportunityStatus() {
+    _services.updateOpportunityStatus();
+  }
 }

@@ -25,7 +25,16 @@ class _DashboardState extends State<Dashboard> {
     [Colors.orange, Colors.orange[100]!, Colors.orange[50]!],
     [Colors.green, Colors.green[100]!, Colors.green[50]!],
     [Colors.blue, Colors.blue[100]!, Colors.blue[50]!],
+    [Colors.greenAccent],
+    [Colors.pink],
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<FirestoreProvider>(context, listen: false);
+    provider.updateOpportunityStatus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -350,14 +359,48 @@ class _DashboardState extends State<Dashboard> {
 
                               // Top Picks
 
-                              SizedBox(
-                                  height: 342,
-                                  child: ListView.builder(
-                                    itemCount: 10,
-                                    itemBuilder: (context, index) {
-                                      return TopPicksCard();
-                                    },
-                                  )),
+                              StreamBuilder(
+                                        stream: provider.getTopPicks(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return TopPicksCard(
+                                              title: "Loading...",
+                                              companyName: "Loading...",
+                                              eligibility: ["Loading..."],
+                                              color: Colors.grey.shade200,
+                                            );
+                                          }
+
+                                          if (!snapshot.hasData ||
+                                              snapshot.data!.docs.isEmpty) {
+                                            return TopPicksCard(
+                                              title: "No Data",
+                                              companyName: "",
+                                              eligibility: [""],
+                                              color: Colors.grey.shade300,
+                                            );
+                                          }
+
+                                          final data = snapshot.data;
+
+                                          return SizedBox(
+                                              height: 342,
+                                              child: ListView.builder(
+                                                itemCount: data!.docs.length < 10 ? data.docs.length : 10,
+                                                itemBuilder: (context, index) {
+                                                  final data = snapshot.data!.docs[index];
+                                                  return TopPicksCard(
+                                                    title: data['title'],
+                                                    companyName: data['organization'],
+                                                    eligibility: data['eligibility'],
+                                                    color: colors[index % 6][0],
+                                                  );
+                                                },
+                                              )
+                                          );
+                                          },
+                                      ),
                             ],
                           ))),
                 ],

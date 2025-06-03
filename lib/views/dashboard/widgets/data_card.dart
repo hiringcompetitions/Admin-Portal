@@ -31,8 +31,8 @@ class DataCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              
               // Side Decor
-      
               Container(
                 height: 38,
                 width: 4,

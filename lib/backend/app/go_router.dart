@@ -47,7 +47,7 @@ final GoRouter router = GoRouter(
       builder: (context, state, child) => Sidebar(child: child),
       routes: [
         GoRoute(
-          path: '/home', 
+          path: '/home',
           builder: (context, state) => Dashboard(),
           routes: [
             GoRoute(

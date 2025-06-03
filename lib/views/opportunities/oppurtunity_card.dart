@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, must_be_immutable
+// ignore_for_file: prefer_final_fields, must_be_immutable, body_might_complete_normally_nullable, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hiring_competitions_admin_portal/backend/models/opportunity_model.dart';
@@ -149,10 +149,10 @@ class _OpportunityCardState extends State<OpportunityCard> {
 
     final opportunity = OpportunityModel(
       title: _titleController.text, 
-      category: widget.selectedCategory ?? 'Others', 
-      organization: _organizationController.text, 
-      eligibility: widget.eligibility.join(','), 
-      duration: _durationController.text, 
+      category: widget.selectedCategory ?? 'Others',
+      organization: _organizationController.text,
+      eligibility: widget.eligibility,
+      duration: _durationController.text,
       lastdate: widget.lastDate ?? DateTime.now(),
       payout: _payoutController.text, 
       location: _locationController.text,
@@ -160,6 +160,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
       about: _aboutController.text, 
       otherInfo: _otherInfoController.text, 
       isTopPick: widget.isImportant, 
+      isActive: true,
       url: _urlController.text,
       timestamp: DateTime.timestamp(),
       uid: "",
@@ -170,7 +171,6 @@ class _OpportunityCardState extends State<OpportunityCard> {
       if(res == null) {
         CustomError("success").showToast(context, "Oppurtunity Added");
       } else {
-        print(res);
         CustomError("error").showToast(context, res);
       }
     } catch(e) {
@@ -190,7 +190,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
       title: _titleController.text, 
       category: widget.selectedCategory ?? 'Others', 
       organization: _organizationController.text, 
-      eligibility: widget.eligibility.join(','), 
+      eligibility: widget.eligibility,
       duration: _durationController.text, 
       lastdate: widget.lastDate ?? DateTime.now(),
       payout: _payoutController.text, 
@@ -199,6 +199,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
       about: _aboutController.text, 
       otherInfo: _otherInfoController.text, 
       isTopPick: widget.isImportant, 
+      isActive: true,
       url: _urlController.text,
       timestamp: DateTime.timestamp(),
       uid: widget.uid,
@@ -209,7 +210,6 @@ class _OpportunityCardState extends State<OpportunityCard> {
       if(res == null) {
         CustomError("success").showToast(context, "Oppurtunity Updated");
       } else {
-        print(res);
         CustomError("error").showToast(context, res);
       }
     } catch(e) {

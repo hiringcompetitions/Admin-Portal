@@ -146,4 +146,32 @@ class FirestoreServices {
         .where("Status", isEqualTo: "Selected")
         .snapshots();
   }
+
+  // Get Top Picks
+  Stream<QuerySnapshot> getTopPicks() {
+    return _firestore
+        .collection("Opportunities")
+        .where("isTopPick", isEqualTo: true)
+        .snapshots();
+  }
+
+  // Update Status of the Opportunity
+  void updateOpportunityStatus() async {
+    try {
+      final now = Timestamp.now();
+      final snapshot = await FirebaseFirestore.instance
+          .collection("Opportunities")
+          .where("lastdate", isLessThan: now)
+          .get();
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        if (data['isActive'] != false) {
+          await doc.reference.update({'isActive': false});
+        }
+      }
+    } catch(e) {
+      print(e.toString());
+    }
+  }
 }

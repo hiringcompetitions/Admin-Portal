@@ -4,7 +4,17 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../constants/custom_colors.dart';
 
 class TopPicksCard extends StatelessWidget {
-  const TopPicksCard({super.key});
+  final String title;
+  final String companyName;
+  final List<dynamic> eligibility;
+  final Color color; 
+  const TopPicksCard({
+    required this.title,
+    required this.companyName,
+    required this.eligibility,
+    required this.color,
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,24 +28,29 @@ class TopPicksCard extends StatelessWidget {
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-                color: Colors.purple, borderRadius: BorderRadius.circular(12)),
+                color: color, borderRadius: BorderRadius.circular(12)),
             child: Text(
-              "G",
+              companyName.substring(0, 1).toUpperCase(),
               style: GoogleFonts.poppins(color: Colors.white, fontSize: 26),
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Generative AI Hackathon",
-                style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    color: CustomColors().primaryText,
-                    fontWeight: FontWeight.w600),
+              Container(
+                width: 270,
+                child: Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      color: CustomColors().primaryText,
+                      fontWeight: FontWeight.w600),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Text(
-                "Google | Eligibility : 24, 25, 26",
+                "$companyName | Eligibility : ${eligibility.join(', ')}",
                 style: GoogleFonts.poppins(
                     fontSize: 14, color: CustomColors().secondaryText),
               )
