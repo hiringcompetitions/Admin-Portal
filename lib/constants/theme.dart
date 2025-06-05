@@ -86,7 +86,7 @@ ThemeData getAppTheme() {
   );
 
   return ThemeData(
-    fontFamily: GoogleFonts.poppins().fontFamily, // Enforce Poppins globally
+    fontFamily: GoogleFonts.poppins().fontFamily, 
     textTheme: poppinsTextTheme,
     
   );

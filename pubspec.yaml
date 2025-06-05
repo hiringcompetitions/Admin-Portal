@@ -49,6 +49,8 @@ dependencies:
   file_saver: ^0.2.14
   multi_select_flutter: ^4.1.3
   go_router: ^15.1.2
+  pie_chart: ^5.4.0
+  syncfusion_flutter_charts: ^29.1.38
 
 dev_dependencies:
   flutter_test:
