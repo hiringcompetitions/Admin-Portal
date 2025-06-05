@@ -7,6 +7,8 @@ import 'package:hiring_competitions_admin_portal/constants/custom_colors.dart';
 import 'package:hiring_competitions_admin_portal/constants/custom_error.dart';
 import 'package:hiring_competitions_admin_portal/views/applicants/widgets/applicants_data.dart';
 import 'package:hiring_competitions_admin_portal/views/opportunities/oppurtunity_card.dart';
+import 'package:hiring_competitions_admin_portal/views/opportunities/piechart.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 
@@ -253,12 +255,20 @@ class OppurtunitiesTableState extends State<OppurtunitiesTable> {
                   ),
                 );
               }, outercontext),
-              RowButton(
+
+              //stats
+              RowButton(                  
                   Icon(
                     Icons.bar_chart_outlined,
                     size: 20,
                   ), () async {
-                // Show Analytics
+                     showDialog(
+                      context: outercontext, 
+                      builder: (context)=>Dialog(
+                        elevation: 8,
+                        child: CustomPieChart(oppId: uid,),
+                        ),
+                    );                   
               }, outercontext),
             ],
           );

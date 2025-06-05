@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hiring_competitions_admin_portal/backend/app/go_router.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/custom_auth_provider.dart';
 import 'package:hiring_competitions_admin_portal/backend/providers/firestore_provider.dart';
+import 'package:hiring_competitions_admin_portal/backend/providers/pie_chart_provider.dart';
 import 'package:hiring_competitions_admin_portal/constants/theme.dart';
 import 'package:hiring_competitions_admin_portal/firebase_options.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CustomAuthProvider(firestoreProvider: FirestoreProvider())),
-        ChangeNotifierProvider(create: (_) => FirestoreProvider()), 
+        ChangeNotifierProvider(create: (_) => FirestoreProvider()),
+        ChangeNotifierProvider(create: (_)=>PieChartProvider()) 
       ],
       child: MaterialApp.router(
         routerConfig: router,
